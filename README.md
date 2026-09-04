@@ -24,6 +24,8 @@
 
 ---
 
+![image alt](https://github.com/sandip07102004/SmartChief/blob/9ff4505e832b375ee0803c93c3de545d80302550/Screenshot%202026-09-04%20213133.png)
+
 ## 📂 Project Structure
 
 ```
