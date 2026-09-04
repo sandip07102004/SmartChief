@@ -1,0 +1,55 @@
+{
+  "name": "projects/88819666962354226",
+  "projectId": "88819666962354226",
+  "title": "SmartChief",
+  "visibility": "PRIVATE",
+  "createTime": "2026-09-04T06:05:41.610219Z",
+  "updateTime": "2026-09-04T06:05:41.610219Z",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "MOBILE",
+  "designTheme": {
+    "colorMode": "DARK",
+    "font": "OUTFIT",
+    "roundness": "ROUND_SIXTEEN",
+    "customColor": "#FF6B35",
+    "saturation": 4
+  },
+  "screens": {
+    "home": {
+      "id": "59bd3cb6337049d698dea09345c23e19",
+      "sourceScreen": "projects/88819666962354226/screens/59bd3cb6337049d698dea09345c23e19",
+      "x": 0,
+      "y": 0,
+      "width": 780,
+      "height": 2074
+    },
+    "ingredient-input": {
+      "id": "f5516955b77c439f985d907c9549a0f6",
+      "sourceScreen": "projects/88819666962354226/screens/f5516955b77c439f985d907c9549a0f6",
+      "x": 820,
+      "y": 0,
+      "width": 780,
+      "height": 2036
+    },
+    "recipe-result": {
+      "id": "84ae6ad7fa6f46529138f8358c0c6025",
+      "sourceScreen": "projects/88819666962354226/screens/84ae6ad7fa6f46529138f8358c0c6025",
+      "x": 1640,
+      "y": 0,
+      "width": 780,
+      "height": 5364
+    },
+    "saved-recipes": {
+      "id": "0ae1b48bbcd348f4b5de7a05a5583524",
+      "sourceScreen": "projects/88819666962354226/screens/0ae1b48bbcd348f4b5de7a05a5583524",
+      "x": 2460,
+      "y": 0,
+      "width": 780,
+      "height": 1768
+    }
+  },
+  "metadata": {
+    "userRole": "OWNER"
+  }
+}

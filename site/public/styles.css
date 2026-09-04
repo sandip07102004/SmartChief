@@ -1,0 +1,1729 @@
+/* SmartChief Global Stylesheet & Smooth Motion System */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Theme Definitions: Dark (Default) & Light */
+:root, html.dark {
+  --color-canvas: #101318;
+  --color-surface: #191D24;
+  --color-surface-elevated: #222731;
+  --color-primary: #FF6B35;
+  --color-primary-glow: #FF7A45;
+  --color-text-primary: #F9FAFB;
+  --color-text-secondary: #94A3B8;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(25, 29, 36, 0.92);
+  --header-bg: rgba(16, 19, 24, 0.9);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  --container-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+  --elevated-card-bg: #222731;
+  --chip-bg: #191D24;
+  --chip-border: rgba(255, 255, 255, 0.1);
+  --input-bg: #191D24;
+  --input-border: rgba(255, 255, 255, 0.1);
+  --banner-bg: linear-gradient(to right, #241712, #191D24, #191D24);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html.light,
+html[data-theme="light"] {
+  --color-canvas: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #F1F5F9;
+  --color-primary: #FF6B35;
+  --color-primary-glow: #FF7A45;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --border-subtle: #E2E8F0;
+  --border-card: #E2E8F0;
+  --glass-bg: rgba(255, 255, 255, 0.96);
+  --header-bg: rgba(248, 250, 252, 0.96);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --container-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+  --elevated-card-bg: #F1F5F9;
+  --chip-bg: #FFFFFF;
+  --chip-border: #E2E8F0;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --banner-bg: linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.surface-card,
+.glass-header,
+.glass-nav,
+.mobile-container,
+.pref-btn,
+.staple-btn,
+.cuisine-pill,
+.category-btn,
+.pill-btn,
+.ing-tag {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Base utility overrides: guarantees reliable variable application regardless of Tailwind alpha wrapping */
+.text-text-light {
+  color: var(--color-text-primary) !important;
+}
+
+.text-text-muted {
+  color: var(--color-text-secondary) !important;
+}
+
+.bg-canvas {
+  background-color: var(--color-canvas) !important;
+}
+
+.bg-surface {
+  background-color: var(--color-surface) !important;
+}
+
+.bg-surface-elevated {
+  background-color: var(--color-surface-elevated) !important;
+}
+
+/* Image Optimization & Hardware Acceleration */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* ==========================================
+   Comprehensive Light Mode Color & Contrast System
+   ========================================== */
+html.light, html[data-theme="light"] {
+  background-color: #F8FAFC !important;
+}
+
+html.light body,
+html[data-theme="light"] body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+html.light .mobile-container,
+html[data-theme="light"] .mobile-container {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+@media (max-width: 767px) {
+  html.light .mobile-container,
+  html[data-theme="light"] .mobile-container {
+    box-shadow: var(--container-shadow) !important;
+  }
+}
+
+/* Surface Cards in Light Mode */
+html.light .surface-card,
+html[data-theme="light"] .surface-card {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
+}
+
+/* Headers and Navigation */
+html.light .glass-header,
+html[data-theme="light"] .glass-header {
+  background: rgba(248, 250, 252, 0.96) !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+html.light .glass-nav,
+html[data-theme="light"] .glass-nav {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-top: 1px solid #E2E8F0 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light .nav-tab-item:not(.text-primary-orange),
+html[data-theme="light"] .nav-tab-item:not(.text-primary-orange) {
+  color: #64748B !important;
+}
+
+html.light .nav-tab-item:not(.text-primary-orange):hover,
+html[data-theme="light"] .nav-tab-item:not(.text-primary-orange):hover {
+  color: #FF6B35 !important;
+}
+
+html.light .nav-tab-item.text-primary-orange,
+html[data-theme="light"] .nav-tab-item.text-primary-orange {
+  color: #FF6B35 !important;
+}
+
+/* All Headings across the app */
+html.light h1:not(.btn-primary *):not(.bg-primary-orange *),
+html.light h2:not(.btn-primary *):not(.bg-primary-orange *),
+html.light h3:not(.btn-primary *):not(.bg-primary-orange *):not(.bg-black\/60 *):not(.bg-black\/70 *),
+html.light h4:not(.btn-primary *):not(.bg-primary-orange *),
+html.light h5:not(.btn-primary *):not(.bg-primary-orange *),
+html.light h6:not(.btn-primary *):not(.bg-primary-orange *) {
+  color: #0F172A !important;
+}
+
+/* General text classes */
+html.light .text-text-light,
+html[data-theme="light"] .text-text-light {
+  color: #0F172A !important;
+}
+
+html.light .text-text-muted,
+html[data-theme="light"] .text-text-muted,
+html.light .text-text-light\/90 {
+  color: #475569 !important;
+}
+
+/* Paragraphs & Spans in Light Mode */
+html.light p:not(.btn-primary *):not(.bg-primary-orange *):not(.bg-black\/60 *):not(.bg-black\/70 *):not(.bg-black\/80 *):not(#smartchief-toast *),
+html.light span.text-text-muted {
+  color: #475569 !important;
+}
+
+html.light span.text-text-light {
+  color: #0F172A !important;
+}
+
+/* Card inner text defaults */
+html.light .surface-card h3,
+html.light .surface-card h4,
+html.light .surface-card a:not(.btn-primary):not(.bg-primary-orange):not(.text-primary-orange),
+html.light .surface-card .font-bold:not(.text-primary-orange):not(.text-emerald-400):not(.text-amber-400):not(.bg-primary-orange *):not(.bg-black\/60 *):not(.bg-black\/70 *) {
+  color: #0F172A !important;
+}
+
+html.light .surface-card p,
+html.light .surface-card .text-xs:not(.text-primary-orange):not(.text-emerald-400):not(.text-amber-400):not(.font-bold):not(.bg-primary-orange *):not(.bg-black\/60 *),
+html.light .surface-card .text-\[11px\]:not(.text-primary-orange):not(.text-emerald-400):not(.text-amber-400):not(.bg-primary-orange *):not(.bg-black\/60 *),
+html.light .surface-card .text-\[10px\]:not(.text-primary-orange):not(.text-emerald-400):not(.text-amber-400):not(.bg-primary-orange *):not(.bg-black\/60 *) {
+  color: #475569 !important;
+}
+
+/* General Link Styling in Light Mode */
+html.light a:not(.btn-primary):not(.bg-primary-orange):not(.text-primary-orange):not(.fav-btn):not(.active) {
+  color: #0F172A;
+}
+
+html.light a:hover {
+  color: #FF6B35 !important;
+}
+
+/* Inputs & Placeholders */
+html.light input {
+  color: #0F172A !important;
+}
+
+html.light input::placeholder {
+  color: #94A3B8 !important;
+  opacity: 1 !important;
+}
+
+/* Universal border adjustments in Light Mode */
+html.light .border-white\/5,
+html.light .border-white\/10,
+html.light .border-white\/20,
+html.light .border-white\/30 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Elevated Light Tints for translucent badges/containers */
+html.light .bg-white\/5 {
+  background-color: #F1F5F9 !important;
+}
+
+html.light .bg-white\/10 {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .bg-white\/20 {
+  background-color: #CBD5E1 !important;
+}
+
+html.light .hover\:bg-white\/5:hover {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .hover\:bg-white\/10:hover {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .hover\:bg-white\/20:hover {
+  background-color: #CBD5E1 !important;
+}
+
+/* Hex Background Overrides */
+html.light .bg-\[\#222731\],
+html.light .bg-\[\#161A22\],
+html.light .bg-\[\#191D24\] {
+  background-color: #F1F5F9 !important;
+}
+
+/* Floating Action / Header Buttons for Recipe Result */
+.recipe-nav-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(16, 19, 24, 0.88) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.recipe-nav-btn .material-symbols-outlined {
+  color: inherit !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+}
+
+.recipe-nav-btn:hover {
+  background: rgba(25, 29, 36, 0.98) !important;
+  border-color: rgba(255, 107, 53, 0.6) !important;
+  color: #FF6B35 !important;
+  transform: scale(1.05);
+}
+
+.recipe-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.recipe-nav-btn.text-primary-orange {
+  color: #FF6B35 !important;
+}
+
+/* Light Mode Floating Header Buttons */
+html.light .recipe-nav-btn,
+html[data-theme="light"] .recipe-nav-btn {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #0F172A !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light .recipe-nav-btn .material-symbols-outlined,
+html[data-theme="light"] .recipe-nav-btn .material-symbols-outlined,
+html.light #header-save-icon,
+html[data-theme="light"] #header-save-icon {
+  color: #0F172A !important;
+}
+
+html.light .recipe-nav-btn:hover,
+html[data-theme="light"] .recipe-nav-btn:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(255, 107, 53, 0.5) !important;
+  color: #FF6B35 !important;
+}
+
+html.light .recipe-nav-btn:hover .material-symbols-outlined,
+html[data-theme="light"] .recipe-nav-btn:hover .material-symbols-outlined,
+html.light #header-save-btn:hover #header-save-icon,
+html[data-theme="light"] #header-save-btn:hover #header-save-icon {
+  color: #FF6B35 !important;
+}
+
+html.light .recipe-nav-btn.text-primary-orange,
+html[data-theme="light"] .recipe-nav-btn.text-primary-orange,
+html.light .recipe-nav-btn.text-primary-orange .material-symbols-outlined,
+html[data-theme="light"] .recipe-nav-btn.text-primary-orange .material-symbols-outlined,
+html.light #header-save-btn.text-primary-orange #header-save-icon,
+html[data-theme="light"] #header-save-btn.text-primary-orange #header-save-icon {
+  color: #FF6B35 !important;
+}
+
+/* Secondary Button */
+html.light .btn-secondary {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .btn-secondary:hover {
+  background: #F8FAFC !important;
+  border-color: #94A3B8 !important;
+  color: #FF6B35 !important;
+}
+
+/* Staple Buttons */
+html.light .staple-btn {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .staple-btn:hover {
+  background-color: #FFF7ED !important;
+  border-color: #FF6B35 !important;
+  color: #FF6B35 !important;
+}
+
+/* Category Filter & Mood Pills */
+html.light .cuisine-pill:not(.active),
+html.light .category-btn:not(.active),
+html.light .pill-btn:not(.active) {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .cuisine-pill:not(.active):hover,
+html.light .category-btn:not(.active):hover,
+html.light .pill-btn:not(.active):hover {
+  border-color: #FF6B35 !important;
+  color: #FF6B35 !important;
+  background-color: #FFF7ED !important;
+}
+
+/* Preference Buttons */
+html.light .pref-btn:not(.active) {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .pref-btn.active {
+  background-color: #FFF7ED !important;
+  border-color: #FF6B35 !important;
+  color: #FF6B35 !important;
+}
+
+/* Ingredient Tags */
+html.light .ing-tag {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light .ing-tag span {
+  color: #0F172A !important;
+}
+
+html.light .ing-tag button {
+  color: #64748B !important;
+}
+
+html.light .ing-tag button:hover {
+  color: #EF4444 !important;
+  background-color: #FEE2E2 !important;
+}
+
+
+/* Checkbox & Recipe Checklist: High-Contrast Tick in Both Light & Dark Mode */
+html.light input[type="checkbox"]:not(:checked),
+html[data-theme="light"] input[type="checkbox"]:not(:checked) {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+}
+
+html.light input[type="checkbox"]:checked,
+html[data-theme="light"] input[type="checkbox"]:checked,
+input[type="checkbox"]:checked {
+  background-color: #FF6B35 !important;
+  border-color: #FF6B35 !important;
+  color: #FFFFFF !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.2 8.5l3.2 3.2 6.4-6.4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 78% 78% !important;
+}
+
+/* Specific Metadata IDs & Labels on Recipe Detail Page */
+html.light #meta-prep,
+html.light #meta-cals,
+html.light #meta-diff,
+html.light #meta-serv,
+html.light #recipe-title,
+html.light #texture-element-badge,
+html.light #beverage-pairing-text {
+  color: #0F172A !important;
+}
+
+html.light #recipe-desc,
+html.light #modal-step-text,
+html.light #chef-secret-text {
+  color: #475569 !important;
+}
+
+/* Promo Banner in Light Mode */
+html.light .bg-gradient-to-r.from-\[\#241712\],
+html.light .bg-gradient-to-r.from-surface.via-\[\#201815\] {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 100%) !important;
+  border-color: rgba(255, 107, 53, 0.3) !important;
+}
+
+html.light #time-banner-title {
+  color: #0F172A !important;
+}
+
+html.light #time-banner-subtitle {
+  color: #475569 !important;
+}
+
+/* Hands-Free Cooking Modal */
+html.light #cooking-modal {
+  background: rgba(255, 255, 255, 0.98) !important;
+  color: #0F172A !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light #cooking-modal .border-b {
+  border-color: #E2E8F0 !important;
+}
+
+html.light #cooking-modal #modal-step-title {
+  color: #0F172A !important;
+}
+
+html.light #cooking-modal #modal-step-text {
+  color: #475569 !important;
+}
+
+html.light #cooking-modal #modal-step-badge {
+  background-color: #FFF7ED !important;
+  color: #EA580C !important;
+  border: 1px solid #FFEDD5 !important;
+}
+
+html.light #cooking-modal button[onclick="closeCookingModal()"] {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+html.light #cooking-modal button[onclick="closeCookingModal()"]:hover {
+  background-color: #E2E8F0 !important;
+  color: #FF6B35 !important;
+}
+
+html.light #cooking-modal button[onclick="closeCookingModal()"] .material-symbols-outlined {
+  color: #0F172A !important;
+}
+
+html.light #cooking-modal button[onclick="closeCookingModal()"]:hover .material-symbols-outlined {
+  color: #FF6B35 !important;
+}
+
+html.light #cooking-modal #modal-prev-btn {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+/* Interactive Share Modal Polish */
+#share-modal > div {
+  animation: modalPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+html.light #share-modal > div,
+html[data-theme="light"] #share-modal > div {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light #share-modal h3,
+html.light #share-modal h4,
+html[data-theme="light"] #share-modal h3,
+html[data-theme="light"] #share-modal h4 {
+  color: #0F172A !important;
+}
+
+html.light #share-modal .border-b,
+html[data-theme="light"] #share-modal .border-b {
+  border-color: #E2E8F0 !important;
+}
+
+html.light #share-modal button[onclick="closeShareModal()"],
+html[data-theme="light"] #share-modal button[onclick="closeShareModal()"] {
+  background-color: #F1F5F9 !important;
+  color: #64748B !important;
+}
+
+html.light #share-modal button[onclick="closeShareModal()"]:hover,
+html[data-theme="light"] #share-modal button[onclick="closeShareModal()"]:hover {
+  background-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+/* Share Recipe: Preview Card in Light Mode */
+html.light .share-preview-card,
+html[data-theme="light"] .share-preview-card {
+  background-color: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+}
+
+html.light #share-preview-title,
+html[data-theme="light"] #share-preview-title {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+html.light .share-preview-subtitle,
+html[data-theme="light"] .share-preview-subtitle {
+  color: #64748B !important;
+}
+
+/* Share Section Headers in Light Mode */
+html.light .share-section-title,
+html[data-theme="light"] .share-section-title {
+  color: #64748B !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* ==========================================================================
+   Direct Social Share Badges & Icons (Guaranteed High-Contrast in Light & Dark)
+   ========================================================================== */
+
+/* Outer Button Card Default (Dark Mode) */
+.share-social-btn {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.625rem !important;
+  border-radius: 1rem !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.share-social-btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+.share-social-btn .share-social-label {
+  color: #F8FAFC !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  letter-spacing: -0.01em !important;
+  transition: color 0.15s ease !important;
+}
+
+/* Base Icon Badge Container - Prominent, Rich Brand Gradient */
+.share-icon-badge {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  color: #FFFFFF !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+}
+
+/* Force SVGs inside badge to be crisp, pure white, and perfectly proportioned */
+.share-icon-badge svg {
+  width: 22px !important;
+  height: 22px !important;
+  display: block !important;
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+  stroke: none !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25)) !important;
+}
+
+.badge-twitter svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+/* Platform-Specific Vibrant Gradients & Shadows */
+.badge-whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+.badge-twitter {
+  background: linear-gradient(135deg, #27272A 0%, #09090B 100%) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.badge-telegram {
+  background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%) !important;
+  box-shadow: 0 4px 14px rgba(34, 158, 217, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+.badge-email {
+  background: linear-gradient(135deg, #FF6B35 0%, #EA4335 100%) !important;
+  box-shadow: 0 4px 14px rgba(255, 107, 53, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Hover Effects on Button Scales Badges */
+.share-social-btn:hover .share-icon-badge {
+  transform: scale(1.12) !important;
+}
+
+.share-social-btn.btn-whatsapp:hover {
+  background-color: rgba(37, 211, 102, 0.12) !important;
+  border-color: rgba(37, 211, 102, 0.45) !important;
+}
+.share-social-btn.btn-whatsapp:hover .badge-whatsapp {
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6) !important;
+}
+
+.share-social-btn.btn-twitter:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+.share-social-btn.btn-twitter:hover .badge-twitter {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7) !important;
+}
+
+.share-social-btn.btn-telegram:hover {
+  background-color: rgba(34, 158, 217, 0.12) !important;
+  border-color: rgba(34, 158, 217, 0.45) !important;
+}
+.share-social-btn.btn-telegram:hover .badge-telegram {
+  box-shadow: 0 6px 20px rgba(34, 158, 217, 0.6) !important;
+}
+
+.share-social-btn.btn-email:hover {
+  background-color: rgba(255, 107, 53, 0.12) !important;
+  border-color: rgba(255, 107, 53, 0.45) !important;
+}
+.share-social-btn.btn-email:hover .badge-email {
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6) !important;
+}
+
+/* Light Mode Polish for Direct Social Share */
+html.light .share-social-btn,
+html[data-theme="light"] .share-social-btn {
+  background-color: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .share-social-btn .share-social-label,
+html[data-theme="light"] .share-social-btn .share-social-label {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+}
+
+html.light .badge-twitter,
+html[data-theme="light"] .badge-twitter {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+  border: none !important;
+}
+
+html.light .share-social-btn.btn-whatsapp:hover,
+html[data-theme="light"] .share-social-btn.btn-whatsapp:hover {
+  background-color: #F0FDF4 !important;
+  border-color: #22C55E !important;
+}
+html.light .share-social-btn.btn-whatsapp:hover .share-social-label,
+html[data-theme="light"] .share-social-btn.btn-whatsapp:hover .share-social-label {
+  color: #16A34A !important;
+}
+
+html.light .share-social-btn.btn-twitter:hover,
+html[data-theme="light"] .share-social-btn.btn-twitter:hover {
+  background-color: #F1F5F9 !important;
+  border-color: #0F172A !important;
+}
+html.light .share-social-btn.btn-twitter:hover .share-social-label,
+html[data-theme="light"] .share-social-btn.btn-twitter:hover .share-social-label {
+  color: #0F172A !important;
+}
+
+html.light .share-social-btn.btn-telegram:hover,
+html[data-theme="light"] .share-social-btn.btn-telegram:hover {
+  background-color: #F0F9FF !important;
+  border-color: #0EA5E9 !important;
+}
+html.light .share-social-btn.btn-telegram:hover .share-social-label,
+html[data-theme="light"] .share-social-btn.btn-telegram:hover .share-social-label {
+  color: #0284C7 !important;
+}
+
+html.light .share-social-btn.btn-email:hover,
+html[data-theme="light"] .share-social-btn.btn-email:hover {
+  background-color: #FFF7ED !important;
+  border-color: #FF6B35 !important;
+}
+html.light .share-social-btn.btn-email:hover .share-social-label,
+html[data-theme="light"] .share-social-btn.btn-email:hover .share-social-label {
+  color: #FF6B35 !important;
+}
+
+/* Copy Link Container in Light Mode */
+html.light .share-link-box,
+html[data-theme="light"] .share-link-box {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+}
+
+html.light .share-link-box input,
+html[data-theme="light"] .share-link-box input,
+html.light #share-link-input,
+html[data-theme="light"] #share-link-input {
+  color: #0F172A !important;
+  font-weight: 600 !important;
+}
+
+html.light .share-link-box .share-link-icon,
+html[data-theme="light"] .share-link-box .share-link-icon {
+  color: #64748B !important;
+}
+
+/* Copy Recipe Summary CTA in Light Mode */
+html.light .share-summary-btn,
+html[data-theme="light"] .share-summary-btn,
+html.light #copy-recipe-text-btn,
+html[data-theme="light"] #copy-recipe-text-btn {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .share-summary-btn span,
+html[data-theme="light"] .share-summary-btn span,
+html.light #copy-recipe-text-btn span,
+html[data-theme="light"] #copy-recipe-text-btn span {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+html.light .share-summary-btn .material-symbols-outlined,
+html[data-theme="light"] .share-summary-btn .material-symbols-outlined,
+html.light #copy-recipe-text-btn .material-symbols-outlined,
+html[data-theme="light"] #copy-recipe-text-btn .material-symbols-outlined {
+  color: #FF6B35 !important;
+}
+
+html.light .share-summary-btn:hover,
+html[data-theme="light"] .share-summary-btn:hover,
+html.light #copy-recipe-text-btn:hover,
+html[data-theme="light"] #copy-recipe-text-btn:hover {
+  background-color: #FFF7ED !important;
+  border-color: rgba(255, 107, 53, 0.5) !important;
+}
+
+/* Secondary CTA "SHARE RECIPE" on Page in Light Mode */
+html.light .btn-share-recipe,
+html[data-theme="light"] .btn-share-recipe {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light .btn-share-recipe span,
+html[data-theme="light"] .btn-share-recipe span {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+html.light .btn-share-recipe .material-symbols-outlined,
+html[data-theme="light"] .btn-share-recipe .material-symbols-outlined {
+  color: #FF6B35 !important;
+}
+
+html.light .btn-share-recipe:hover,
+html[data-theme="light"] .btn-share-recipe:hover {
+  background-color: #FFF7ED !important;
+  border-color: #FF6B35 !important;
+}
+
+html.light .btn-share-recipe:hover span,
+html[data-theme="light"] .btn-share-recipe:hover span {
+  color: #FF6B35 !important;
+}
+
+html.light #share-modal .text-text-light,
+html[data-theme="light"] #share-modal .text-text-light {
+  color: #0F172A !important;
+}
+
+html.light #share-modal .text-text-muted,
+html[data-theme="light"] #share-modal .text-text-muted {
+  color: #64748B !important;
+}
+
+
+/* Toast Pop-Up System: Disabled */
+#smartchief-toast,
+#cooksmart-toast,
+.toast-popup {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* PROTECTED WHITE TEXT: Primary CTAs, active items, overlays on photography */
+html.light .btn-primary,
+html.light .btn-primary *,
+html.light .bg-primary-orange,
+html.light .bg-primary-orange *,
+html.light .pill-btn.active,
+html.light .category-btn.active,
+html.light .cuisine-pill.active,
+html.light .time-pill.active,
+html.light .bg-black\/60:not(.fav-btn),
+html.light .bg-black\/60:not(.fav-btn) *,
+html.light .bg-black\/70,
+html.light .bg-black\/70 *,
+html.light .bg-black\/80,
+html.light .bg-black\/80 *,
+html.light .logo-squared,
+html.light .logo-squared * {
+  color: #FFFFFF !important;
+}
+
+/* Squared Logo & Icon Geometry */
+.logo-squared {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.logo-squared:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 107, 53, 0.4);
+}
+
+.brand-icon-squared {
+  border-radius: 10px !important;
+}
+
+/* Integrated Dark / Light Mode Toggle Button */
+.theme-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-surface-elevated);
+  border-color: rgba(255, 107, 53, 0.35);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+.theme-toggle-btn .theme-icon {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+  font-size: 19px;
+}
+
+.theme-toggle-btn:hover .theme-icon {
+  transform: rotate(25deg) scale(1.15);
+}
+
+/* Light mode specific styling */
+html.light .theme-toggle-btn {
+  background-color: #FFFFFF !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Time of Day Greeting Display */
+#greeting-display {
+  user-select: none;
+}
+
+#greeting-text {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.time-pill {
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.time-pill:hover {
+  transform: translateY(-1px);
+}
+
+.time-pill:active {
+  transform: scale(0.95);
+}
+
+.time-pill.active {
+  background-color: #FF6B35 !important;
+  color: #FFFFFF !important;
+  border-color: #FF6B35 !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35) !important;
+}
+
+/* Responsive App Viewport Container */
+.mobile-container {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-canvas);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .mobile-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .mobile-container {
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Desktop Header Navigation Links */
+.desktop-nav-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.desktop-nav-link:hover {
+  color: var(--color-primary);
+  background-color: rgba(255, 107, 53, 0.08);
+}
+
+.desktop-nav-link.active {
+  color: var(--color-primary);
+  background-color: rgba(255, 107, 53, 0.12);
+  font-weight: 700;
+}
+
+/* Dynamic Page Content Shell for Smooth Transitions */
+#page-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+/* Clean, Smooth Spring Page Transitions (No Jitter) */
+.page-exit {
+  opacity: 0 !important;
+  transform: translate3d(0, 4px, 0) !important;
+  transition: opacity 0.14s ease-out, transform 0.14s ease-out !important;
+  will-change: opacity, transform;
+  pointer-events: none;
+}
+
+.page-enter {
+  animation: pageSpringEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageSpringEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Glassmorphism Navigation */
+.glass-nav {
+  background: rgba(25, 29, 36, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  transition: all 0.3s var(--ease-spring);
+}
+
+.glass-header {
+  background: rgba(16, 19, 24, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.25s var(--ease-spring);
+}
+
+/* Bottom Nav Tab Item Transition */
+.nav-tab-item {
+  transition: transform 0.2s var(--ease-spring), color 0.2s ease;
+}
+
+.nav-tab-item:active {
+  transform: scale(0.88);
+}
+
+.nav-tab-pill {
+  transition: all 0.25s var(--ease-spring);
+}
+
+/* Surface Cards */
+.surface-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  transition: transform 0.24s var(--ease-spring), border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.surface-card:hover {
+  border-color: rgba(255, 107, 53, 0.35);
+}
+
+.surface-card:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button */
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF834B 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 14px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-primary);
+  border: 1px solid var(--border-subtle);
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 12px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease-spring);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-secondary:active {
+  transform: scale(0.96);
+}
+
+/* Scrollbar Hide */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 26px rgba(255, 107, 53, 0.7);
+  }
+}
+
+.pulse-cta {
+  animation: pulse-glow 2.4s infinite ease-in-out;
+}
+
+/* Page Transition Skeleton Shimmer */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Concept Tabs & Cuisine Pills Micro-Interactions */
+.concept-tab {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  user-select: none;
+}
+
+.concept-tab:active {
+  transform: scale(0.96);
+}
+
+.cuisine-pill {
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  user-select: none;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.cuisine-pill:active {
+  transform: scale(0.95);
+}
+
+.cuisine-pill.active {
+  border-color: rgba(255, 107, 53, 0.4);
+}
+
+/* ==========================================
+   AI RECIPE SYNTHESIZER FAKE LOADING PAGE
+   ========================================== */
+.fake-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0e1117;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  user-select: none;
+}
+
+.fake-loading-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ambient dynamic background lighting */
+.loading-ambient-glow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.22) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 75%);
+  filter: blur(45px);
+  pointer-events: none;
+  animation: ambient-pulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes ambient-pulse {
+  0% { transform: scale(0.9) translate(-10px, -10px); opacity: 0.6; }
+  100% { transform: scale(1.15) translate(10px, 10px); opacity: 1; }
+}
+
+/* Orbital Rings */
+.orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orbital-ring-outer {
+  width: 170px;
+  height: 170px;
+  border: 1.5px dashed rgba(255, 107, 53, 0.4);
+  animation: spin-clockwise 14s linear infinite;
+}
+
+.orbital-ring-inner {
+  width: 130px;
+  height: 130px;
+  border: 1.5px dashed rgba(245, 158, 11, 0.35);
+  animation: spin-counter 9s linear infinite;
+}
+
+@keyframes spin-clockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-counter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* Center Culinary Glow Icon */
+.culinary-core {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 100%);
+  box-shadow: 0 0 35px rgba(255, 107, 53, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: core-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes core-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 107, 53, 0.45); }
+  50% { transform: scale(1.06); box-shadow: 0 0 45px rgba(255, 107, 53, 0.8), 0 0 20px rgba(245, 158, 11, 0.5); }
+}
+
+/* Shimmer Progress Track */
+.loading-progress-track {
+  width: 100%;
+  max-width: 320px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.loading-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff6b35 0%, #fbbf24 100%);
+  box-shadow: 0 0 14px rgba(255, 107, 53, 0.9);
+  transition: width 0.12s linear;
+  position: relative;
+}
+
+.loading-progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: bar-shine 1.2s infinite;
+}
+
+@keyframes bar-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Floating Ingredients */
+.floating-ingredient-chip {
+  animation: chip-float 3s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease;
+}
+
+.floating-ingredient-chip:nth-child(even) {
+  animation-duration: 3.6s;
+  animation-delay: 0.4s;
+}
+
+.floating-ingredient-chip:nth-child(3n) {
+  animation-duration: 2.8s;
+  animation-delay: 0.8s;
+}
+
+@keyframes chip-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+/* Spark particle */
+.simmer-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffb703;
+  box-shadow: 0 0 8px #ffb703;
+  animation: spark-rise 2s infinite ease-out;
+  opacity: 0;
+}
+
+@keyframes spark-rise {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-70px) scale(1.2); opacity: 0; }
+}
+
+/* ==========================================
+   COMPREHENSIVE LIGHT MODE: LOADING PAGE & OVERLAY
+   ========================================== */
+html.light .loading-page,
+html[data-theme="light"] .loading-page,
+html.light .fake-loading-overlay,
+html[data-theme="light"] .fake-loading-overlay {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+html.light .fake-loading-overlay {
+  background: rgba(248, 250, 252, 0.98) !important;
+}
+
+html.light .loading-ambient-glow {
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.16) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 75%) !important;
+}
+
+html.light .orbital-ring-outer {
+  border: 1.5px dashed rgba(255, 107, 53, 0.55) !important;
+}
+
+html.light .orbital-ring-inner {
+  border: 1.5px dashed rgba(245, 158, 11, 0.5) !important;
+}
+
+html.light .loading-progress-track {
+  background: #E2E8F0 !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+html.light .loading-progress-fill {
+  background: linear-gradient(90deg, #FF6B35 0%, #F59E0B 100%) !important;
+  box-shadow: 0 0 16px rgba(255, 107, 53, 0.6) !important;
+}
+
+html.light #loading-status-text,
+html.light #overlay-loading-status-text {
+  color: #0F172A !important;
+}
+
+html.light .floating-ingredient-chip {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light .loading-cancel-btn {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .loading-cancel-btn:hover {
+  background: #F1F5F9 !important;
+  color: #FF6B35 !important;
+  border-color: rgba(255, 107, 53, 0.4) !important;
+}
+
+/* ==========================================
+   LIGHT MODE: PICTURES & HERO GRADIENTS
+   ========================================== */
+/* Seamless hero photo blend in Light Mode */
+html.light .relative.w-full.h-\[360px\] > .bg-gradient-to-b {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.02) 45%, rgba(248, 250, 252, 0.98) 100%) !important;
+}
+
+html.light #recipe-hero-img {
+  filter: contrast(1.03) saturate(1.05);
+}
+
+/* Photo rating badge on cards */
+html.light .recipe-card .absolute.bottom-2,
+html.light article .absolute.bottom-2 {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0F172A !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .recipe-card .absolute.bottom-2 span:last-child,
+html.light article .absolute.bottom-2 span:last-child {
+  color: #0F172A !important;
+  font-weight: 700;
+}
+
+/* ==========================================
+   LIGHT MODE: ICONS & BUTTONS
+   ========================================== */
+/* Favorite / Save buttons on recipe cards and headers (Guaranteed High Contrast in Light Mode) */
+html.light .fav-btn,
+html[data-theme="light"] .fav-btn {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light .fav-btn .material-symbols-outlined,
+html[data-theme="light"] .fav-btn .material-symbols-outlined {
+  color: #0F172A !important;
+}
+
+html.light .fav-btn:hover,
+html[data-theme="light"] .fav-btn:hover {
+  background: #FFFFFF !important;
+  border-color: #FF6B35 !important;
+  color: #FF6B35 !important;
+}
+
+html.light .fav-btn:hover .material-symbols-outlined,
+html[data-theme="light"] .fav-btn:hover .material-symbols-outlined {
+  color: #FF6B35 !important;
+}
+
+html.light .fav-btn.active,
+html[data-theme="light"] .fav-btn.active,
+html.light .fav-btn.text-primary-orange,
+html[data-theme="light"] .fav-btn.text-primary-orange,
+html.light .fav-btn.text-primary-orange .material-symbols-outlined,
+html[data-theme="light"] .fav-btn.text-primary-orange .material-symbols-outlined {
+  color: #FF6B35 !important;
+}
+
+/* Status icon color calibration for light mode contrast */
+html.light .material-symbols-outlined.text-emerald-400 {
+  color: #059669 !important;
+}
+
+html.light .material-symbols-outlined.text-amber-400 {
+  color: #D97706 !important;
+}
+
+html.light .material-symbols-outlined.text-rose-500 {
+  color: #E11D48 !important;
+}
+
+/* Header buttons in Light Mode */
+html.light header .w-9.h-9.rounded-xl.bg-white\/5,
+html.light header .w-8.h-8.rounded-xl.bg-white\/5 {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light header .w-9.h-9.rounded-xl.bg-white\/5:hover,
+html.light header .w-8.h-8.rounded-xl.bg-white\/5:hover {
+  color: #FF6B35 !important;
+  border-color: rgba(255, 107, 53, 0.4) !important;
+  background-color: #FFF7ED !important;
+}
+
+/* ==========================================
+   LIGHT MODE: TEXTS & BADGES CONTRAST
+   ========================================== */
+html.light #synergy-score-badge {
+  background-color: #ECFDF5 !important;
+  border-color: #A7F3D0 !important;
+  color: #047857 !important;
+}
+
+html.light #items-badge {
+  background-color: #FFF7ED !important;
+  border-color: #FFEDD5 !important;
+  color: #EA580C !important;
+}
+
+html.light #saved-badge {
+  background-color: #FFF7ED !important;
+  border-color: #FFEDD5 !important;
+  color: #EA580C !important;
+}
+
+/* Instruction Step Card Details */
+html.light #instructions-list .surface-card {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+html.light #instructions-list .surface-card .w-7.h-7.rounded-full {
+  background-color: #FFF7ED !important;
+  color: #EA580C !important;
+  border: 1px solid #FFEDD5 !important;
+}
+
+html.light #instructions-list h4 {
+  color: #0F172A !important;
+}
+
+html.light #instructions-list p {
+  color: #475569 !important;
+}
+
+/* Ingredients Checklist Labels, Checked State & Quantity badges */
+#ingredients-list input[type="checkbox"] {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  min-width: 1.25rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  transition: all 0.2s ease !important;
+}
+
+html.light #ingredients-list input[type="checkbox"]:not(:checked),
+html[data-theme="light"] #ingredients-list input[type="checkbox"]:not(:checked) {
+  background-color: #FFFFFF !important;
+  border: 2px solid #CBD5E1 !important;
+}
+
+html.light #ingredients-list label:hover input[type="checkbox"]:not(:checked),
+html[data-theme="light"] #ingredients-list label:hover input[type="checkbox"]:not(:checked) {
+  border-color: #FF6B35 !important;
+}
+
+#ingredients-list input[type="checkbox"]:checked,
+html.light #ingredients-list input[type="checkbox"]:checked,
+html[data-theme="light"] #ingredients-list input[type="checkbox"]:checked {
+  background-color: #FF6B35 !important;
+  border: 2px solid #FF6B35 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.2 8.5l3.2 3.2 6.4-6.4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 80% 80% !important;
+  box-shadow: 0 2px 6px rgba(255, 107, 53, 0.35) !important;
+}
+
+html.light #ingredients-list label {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+html.light #ingredients-list label:hover {
+  border-color: rgba(255, 107, 53, 0.4) !important;
+  background-color: #FFFCF9 !important;
+}
+
+html.light #ingredients-list label span.text-text-muted {
+  background-color: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #475569 !important;
+}
+
+html.light #ingredients-list label span.font-medium {
+  color: #0F172A !important;
+}
+
+/* Checked styling in light mode */
+html.light #ingredients-list label:has(input:checked),
+html[data-theme="light"] #ingredients-list label:has(input:checked),
+html.light #ingredients-list label.item-checked,
+html[data-theme="light"] #ingredients-list label.item-checked {
+  background-color: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light #ingredients-list label:has(input:checked) span.font-medium,
+html[data-theme="light"] #ingredients-list label:has(input:checked) span.font-medium,
+html.light #ingredients-list label.item-checked span.font-medium,
+html[data-theme="light"] #ingredients-list label.item-checked span.font-medium {
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+}
+
+/* Chef Secret & Beverage Cards */
+html.light section.surface-card.bg-primary-orange\/5 {
+  background: #FFF7ED !important;
+  border-color: rgba(255, 107, 53, 0.35) !important;
+}
+
+html.light #chef-secret-text {
+  color: #475569 !important;
+}
+
+html.light #texture-element-badge {
+  color: #0F172A !important;
+}
+
+html.light #beverage-pairing-text {
+  color: #0F172A !important;
+}
+
+
+

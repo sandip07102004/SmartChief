@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Recipes - CookSmart</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "inverse-surface": "#f7ddd5",
+                "surface-variant": "#41312c",
+                "tertiary-fixed": "#b5ebff",
+                "inverse-primary": "#ab3500",
+                "primary-fixed-dim": "#ffb59d",
+                "on-background": "#f7ddd5",
+                "surface-container-high": "#352722",
+                "on-secondary-container": "#b2b5be",
+                "surface-container-low": "#261814",
+                "surface-container-highest": "#41312c",
+                "surface-tint": "#ffb59d",
+                "on-tertiary-fixed-variant": "#004e60",
+                "surface": "#1d100c",
+                "on-error-container": "#ffdad6",
+                "on-primary-fixed": "#390c00",
+                "on-tertiary-container": "#003744",
+                "tertiary-container": "#00a7cb",
+                "inverse-on-surface": "#3c2d28",
+                "secondary-fixed-dim": "#c3c6d0",
+                "surface-bright": "#463630",
+                "on-primary-fixed-variant": "#832600",
+                "secondary-container": "#43474f",
+                "on-surface": "#f7ddd5",
+                "on-secondary-fixed-variant": "#43474f",
+                "on-error": "#690005",
+                "primary": "#ffb59d",
+                "on-primary": "#5d1900",
+                "tertiary": "#59d5fb",
+                "outline": "#a98a80",
+                "on-secondary-fixed": "#181c23",
+                "surface-dim": "#1d100c",
+                "tertiary-fixed-dim": "#59d5fb",
+                "secondary": "#c3c6d0",
+                "on-tertiary-fixed": "#001f28",
+                "error": "#ffb4ab",
+                "primary-container": "#ff6b35",
+                "outline-variant": "#594139",
+                "on-tertiary": "#003543",
+                "primary-fixed": "#ffdbd0",
+                "on-surface-variant": "#e1bfb5",
+                "on-secondary": "#2d3138",
+                "secondary-fixed": "#dfe2ec",
+                "error-container": "#93000a",
+                "surface-container-lowest": "#170b08",
+                "on-primary-container": "#5f1900",
+                "surface-container": "#2a1c18",
+                "background": "#1d100c",
+                // Custom overrides for specific requirements not perfectly matched by default mapping
+                "app-bg": "#101318",
+                "card-bg": "#191D24",
+                "saffron": "#FF6B35"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px",
+                "card": "20px"
+              },
+              "spacing": {
+                "stack-gap-md": "16px",
+                "gutter": "16px",
+                "unit": "4px",
+                "stack-gap-lg": "24px",
+                "stack-gap-sm": "8px",
+                "container-padding": "20px"
+              },
+              "fontFamily": {
+                "label-caps": ["Plus Jakarta Sans"],
+                "headline-lg": ["Outfit"],
+                "display-lg": ["Outfit"],
+                "title-md": ["Plus Jakarta Sans"],
+                "headline-lg-mobile": ["Outfit"],
+                "body-sm": ["Plus Jakarta Sans"],
+                "body-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                "title-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for clean horizontal scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-app-bg text-on-surface font-body-lg min-h-screen pb-24 relative overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-app-bg/80 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center justify-between px-container-padding h-16">
+<div class="flex items-center gap-3">
+<!-- Leading Icon -->
+<button class="text-on-surface-variant hover:opacity-80 active:scale-95 transition-transform p-1">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<!-- Brand/Title -->
+<div class="flex items-center gap-2">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface tracking-tight">Saved Recipes</h1>
+<span class="bg-white/5 border border-white/10 rounded-full px-2 py-0.5 text-[10px] font-bold text-on-surface-variant tracking-wider">4 SAVED</span>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:opacity-80 active:scale-95 transition-transform p-1">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="hover:opacity-80 active:scale-95 transition-transform p-1">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[88px] px-container-padding pb-safe">
+<!-- Filter Row -->
+<div class="-mx-container-padding px-container-padding mb-stack-gap-lg overflow-x-auto hide-scrollbar">
+<div class="flex gap-2 w-max pb-2">
+<!-- Active Pill -->
+<button class="px-4 py-2 bg-saffron text-app-bg rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                    All Saved
+                </button>
+<!-- Inactive Pills -->
+<button class="px-4 py-2 bg-card-bg border border-white/10 text-on-surface-variant rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                    Favorites
+                </button>
+<button class="px-4 py-2 bg-card-bg border border-white/10 text-on-surface-variant rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                    Quick Meals
+                </button>
+<button class="px-4 py-2 bg-card-bg border border-white/10 text-on-surface-variant rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                    Dinner
+                </button>
+<button class="px-4 py-2 bg-card-bg border border-white/10 text-on-surface-variant rounded-full font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                    Healthy
+                </button>
+</div>
+</div>
+<!-- Recipe Grid (2 Columns) -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Card 1 -->
+<article class="bg-card-bg rounded-card border border-white/[0.08] overflow-hidden flex flex-col group cursor-pointer relative">
+<!-- Heart Icon (Filled) -->
+<button class="absolute top-3 right-3 z-10 w-8 h-8 bg-app-bg/60 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-saffron text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<!-- Image Container -->
+<div class="h-40 w-full relative overflow-hidden bg-surface-container-high rounded-t-card">
+<img alt="Creamy Tuscan Garlic Chicken" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO1VkHWZC7BU1LdbfcJvFqxykJBeUJojOBrYh612_FXeD8_S7z84FgnMWaYyJMJ6FlZH3R3wITuwp43wVNUFLObL2LAR3k61Lc6T1iQX1ecuCDnJ-hekq6_q0QSm5oYJrsJiRKoBzoKZ8vpi_WJWYKWXj0dcvbisHI0KctggVGVxuN2mw6242WFwnRFnEv5sXSS_jYI5FK4y077t0KfFtEANiF3T8sgVUdMNdJupe0N2qnBF3OZmrG0SLyiHu9WZtjSId4WNjl"/>
+<!-- Rating Badge -->
+<div class="absolute bottom-2 left-2 bg-app-bg/80 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-saffron text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-surface">4.9</span>
+</div>
+</div>
+<!-- Content Area -->
+<div class="p-4 flex flex-col justify-between flex-grow">
+<h3 class="font-title-md text-[16px] leading-tight text-on-surface font-semibold mb-3 line-clamp-2">Creamy Tuscan Garlic Chicken</h3>
+<div class="flex items-center justify-between text-on-surface-variant opacity-80 mt-auto pt-2 border-t border-white/5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">25 min</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">420 kcal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-card-bg rounded-card border border-white/[0.08] overflow-hidden flex flex-col group cursor-pointer relative">
+<button class="absolute top-3 right-3 z-10 w-8 h-8 bg-app-bg/60 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-saffron text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="h-40 w-full relative overflow-hidden bg-surface-container-high rounded-t-card">
+<img alt="Spicy Salmon Poke Bowl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXfIA3yP5xXALUghhbUMG4_RBVVIHa9jwTgr8MiQyCTSSG7BGzPqxOXAfxxefFL-rQxzJT4GQUV25tot3PqogMaPF1UqMza2em0HhTNtg3SquF-4VcS4gsZid1xgrf24h4eqW8FzRzO9_gnW62uzgwGhdFk0oOBKwcbdFCQ8AGVtQty0iO0hazs6XnvA-EPSCkhYsPUlzXMejyN9mmuWZDWUR6tcIaRMHnUgR3KrVd6Jh8hF89ud8t2vBxt8UPgbISEXhpcR48"/>
+<div class="absolute bottom-2 left-2 bg-app-bg/80 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-saffron text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-surface">4.8</span>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-grow">
+<h3 class="font-title-md text-[16px] leading-tight text-on-surface font-semibold mb-3 line-clamp-2">Spicy Salmon Poke Bowl</h3>
+<div class="flex items-center justify-between text-on-surface-variant opacity-80 mt-auto pt-2 border-t border-white/5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">15 min</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">380 kcal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-card-bg rounded-card border border-white/[0.08] overflow-hidden flex flex-col group cursor-pointer relative">
+<button class="absolute top-3 right-3 z-10 w-8 h-8 bg-app-bg/60 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-saffron text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="h-40 w-full relative overflow-hidden bg-surface-container-high rounded-t-card">
+<img alt="Truffle Mushroom Risotto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHiLKiGCn-mpL1wXfo3do2Wcy1cUxElUkJv6kHCUdxu6GDephkVrW4juzEy39V2B1AwLaA1stuwMColNlFJw1_1M6pNurA4BViJhiovlaZMZNQnGamrVuGpMso-PwUYiiJYzOXnGWRmSOFKWg_MoRjr6_k_kRMDi5O6CnIj-rGpTSVcZzwfB0JfO4H49eHtjart2p6e5c9Y_-MFcb4tNBJTWJZvN_BiLlpjrC7SIv9iXx8mCrf3baTfIu_nCqoNW5mh2Di8dcP"/>
+<div class="absolute bottom-2 left-2 bg-app-bg/80 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-saffron text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-surface">4.7</span>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-grow">
+<h3 class="font-title-md text-[16px] leading-tight text-on-surface font-semibold mb-3 line-clamp-2">Truffle Mushroom Risotto</h3>
+<div class="flex items-center justify-between text-on-surface-variant opacity-80 mt-auto pt-2 border-t border-white/5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">35 min</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">450 kcal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-card-bg rounded-card border border-white/[0.08] overflow-hidden flex flex-col group cursor-pointer relative">
+<button class="absolute top-3 right-3 z-10 w-8 h-8 bg-app-bg/60 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-saffron text-[18px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="h-40 w-full relative overflow-hidden bg-surface-container-high rounded-t-card">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A beautifully plated Mediterranean Quinoa Bowl shot from a top-down angle. The bowl sits on a dark slate surface, illuminated by warm, high-contrast spotlighting typical of modern dark-mode culinary photography. The ingredients—vibrant cherry tomatoes, sliced cucumbers, kalamata olives, feta cheese, and fluffy quinoa—are sharply focused and richly textured. The overall aesthetic is clean, premium, and appetizing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8vJerrMnVhrURHbtnK1Npe54PD87aGvucVdE9y87mRZKCKRHKI1fi6kInG55qEpkqWKTUtVtsyT4-JErmWS5_hza1BlG0t1_b8Grdvz1nQcE5SLZUxHTm-CMU5o0c81i98OLFh9ewo4i4ZlNeEduYHJ2jTzf0WjecsWTyy5RTv0ikLFWklEMlahQyyPVFxA21MChqgJD8l-dtIzPVzU-uPny3oqTuymCkb94KINtd0qdMEfbu8j-30qIgQ6Ovn07j-4vPFxai"/>
+<div class="absolute bottom-2 left-2 bg-app-bg/80 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-saffron text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-surface">4.9</span>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-grow">
+<h3 class="font-title-md text-[16px] leading-tight text-on-surface font-semibold mb-3 line-clamp-2">Mediterranean Quinoa Bowl</h3>
+<div class="flex items-center justify-between text-on-surface-variant opacity-80 mt-auto pt-2 border-t border-white/5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">20 min</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span class="font-label-caps text-[10px] uppercase tracking-wider font-semibold">320 kcal</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<!-- Applies: {"name": "BottomNavBar", "type": "label_icon", "destination_count": "4", "label_texts": ["Discover", "Saved", "Plan", "Profile"], "icons": ["explore", "bookmark", "calendar_today", "person"], "style_bg_color": "bg-surface/80 dark:bg-surface/80 backdrop-blur-xl", "style_primary_color": "text-primary", "style_typography": "font-label-caps text-label-caps", "style_brand_logo": "text-primary font-bold", "style_component_shape": "fixed bottom-0 w-full z-50", "style_separation_logic": "border-t border-white/10", "style_shadows_and_elevation": "flat no shadows", "style_active_navigation": "flex flex-col items-center justify-center text-primary", "style_inactive_navigation": "flex flex-col items-center justify-center text-on-surface-variant", "style_universal_hover": "hover:text-primary/80", "style_interactions": "active:scale-90 transition-all duration-200", "style_shell_layout": "flex justify-around items-center h-20 pb-safe px-4"} -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-app-bg/80 backdrop-blur-xl border-t border-white/10">
+<div class="flex justify-around items-center h-20 pb-4 px-4">
+<!-- Inactive: Discover -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-saffron/80 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">Discover</span>
+</button>
+<!-- Active: Saved (Matches specific request to be active in #FF6B35 / Saffron) -->
+<button class="flex flex-col items-center justify-center text-saffron hover:text-saffron/80 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="bookmark" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+<span class="font-label-caps text-label-caps">Saved</span>
+</button>
+<!-- Inactive: Plan -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-saffron/80 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</button>
+<!-- Inactive: Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-saffron/80 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>

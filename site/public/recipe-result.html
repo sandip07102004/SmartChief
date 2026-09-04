@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>SmartChief — Innovative Recipe Result & Master Guide</title>
+  <meta name="description" content="Chief-curated culinary instructions, flavor chemistry metrics, ingredients checklist, and smart cooking mode."/>
+
+  <!-- Immediate Theme Initializer (Prevents Theme Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem("smartchief_theme_mode") || localStorage.getItem("cooksmart_theme_mode") || "system";
+        var isDark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Brand Favicon & Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="shortcut icon" href="favicon.ico"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "canvas": "var(--color-canvas)",
+            "surface": "var(--color-surface)",
+            "surface-elevated": "var(--color-surface-elevated)",
+            "primary-orange": "#FF6B35",
+            "primary-glow": "#FF7A45",
+            "text-light": "var(--color-text-primary)",
+            "text-muted": "var(--color-text-secondary)"
+          },
+          borderRadius: {
+            "card": "20px"
+          },
+          fontFamily: {
+            "outfit": ["Outfit", "sans-serif"],
+            "sans": ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-canvas text-text-light font-sans antialiased min-h-screen">
+
+  <div class="mobile-container pb-32 md:pb-16">
+    
+    <!-- Page Viewport Shell for Smooth Transitions -->
+    <div id="page-viewport">
+      <!-- Top Header -->
+      <header class="glass-header sticky top-0 z-50 px-5 md:px-8 lg:px-12 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <a href="index.html" class="recipe-nav-btn" title="Back to Home">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+          </a>
+          <a href="index.html" class="hidden sm:flex items-center gap-2">
+            <span class="font-outfit text-base font-bold text-text-light">Recipe Details</span>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex items-center gap-2 lg:gap-3">
+          <a href="index.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">home</span>
+            <span>Home</span>
+          </a>
+          <a href="ingredient-input.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">soup_kitchen</span>
+            <span>AI Chief Synthesizer</span>
+          </a>
+          <a href="saved-recipes.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">bookmark</span>
+            <span>Saved Collection</span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button id="share-recipe-btn" onclick="shareRecipe()" class="recipe-nav-btn text-text-light hover:text-primary-orange active:scale-90 transition-all group" title="Share Recipe" aria-label="Share Recipe">
+            <span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">share</span>
+          </button>
+          <button id="header-save-btn" onclick="toggleSaveCurrentRecipe()" class="recipe-nav-btn" title="Save Recipe">
+            <span id="header-save-icon" class="material-symbols-outlined text-lg">bookmark</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content Body: 2-Column Responsive Layout -->
+      <main class="px-5 md:px-8 lg:px-12 pt-6 pb-28 md:pb-12 max-w-7xl mx-auto w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Left Column (lg:col-span-5): Hero Visual, Nutrition, Sommelier & Technique, CTAs -->
+          <div class="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-24">
+            
+            <!-- Hero Photography Container -->
+            <div class="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-3xl overflow-hidden group shadow-xl">
+              <img id="recipe-hero-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPmlitRZy3vPh5WfosjsoLrH1BlaL-ssz7CBtBlKzkWKEv5MmaEZpi5sRiFZkJNRYMhQWt7-AhXS_Y6dw8drUFA6KlC5csD2Vw1T-U5xwLjl75TxgVq1k35SakOUFVGMYQdIz6VYn51qzK2-FUbiZppY95vbQbm4FAzRZE08SHIVZPmftSquXuWTv5BJ3g7WX2xgVmzUSiJ36gqxI5Lf6kk96u2c1vetx2xeIf0Kur38HcDzstQwMBXFtK3BixHLKHub1ItB72" alt="Recipe Hero" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            </div>
+
+            <!-- Macro Stats Chips -->
+            <div class="grid grid-cols-4 gap-2.5">
+              <div class="surface-card rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-primary-orange text-lg mb-0.5">timer</span>
+                <span id="meta-prep" class="text-xs font-bold text-text-light">25 min</span>
+                <span class="text-[10px] text-text-muted">Cook Time</span>
+              </div>
+              <div class="surface-card rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-primary-orange text-lg mb-0.5">local_fire_department</span>
+                <span id="meta-cals" class="text-xs font-bold text-text-light">420 kcal</span>
+                <span class="text-[10px] text-text-muted">Calories</span>
+              </div>
+              <div class="surface-card rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-primary-orange text-lg mb-0.5">restaurant</span>
+                <span id="meta-diff" class="text-xs font-bold text-text-light">Medium</span>
+                <span class="text-[10px] text-text-muted">Skill</span>
+              </div>
+              <div class="surface-card rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-primary-orange text-lg mb-0.5">group</span>
+                <span id="meta-serv" class="text-xs font-bold text-text-light">2-4 serv</span>
+                <span class="text-[10px] text-text-muted">Servings</span>
+              </div>
+            </div>
+
+            <!-- Texture Contrast & Sommelier Pairing -->
+            <div class="grid grid-cols-1 gap-3">
+              <div class="surface-card rounded-xl px-4 py-3 flex items-center justify-between border border-white/5">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-amber-400 text-base">grain</span>
+                  <span class="text-xs text-text-muted font-medium">Texture Contrast:</span>
+                </div>
+                <span id="texture-element-badge" class="text-xs font-bold text-text-light">Crispy Cutlet Fond & Herb Pangrattato</span>
+              </div>
+
+              <div class="surface-card rounded-xl px-4 py-3 flex items-center gap-3 border border-primary-orange/20 bg-primary-orange/5">
+                <div class="w-8 h-8 rounded-xl bg-primary-orange/20 text-primary-orange flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">wine_bar</span>
+                </div>
+                <div class="flex-1 text-xs">
+                  <span class="text-text-muted font-medium">Sommelier's Drink Pairing: </span>
+                  <span id="beverage-pairing-text" class="text-text-light font-bold">Crisp Mineral Sancerre or Sparkling Blood Orange Soda</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chief's Secret Technique Card -->
+            <section class="surface-card rounded-2xl p-4 bg-primary-orange/5 border border-primary-orange/30 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-primary-orange/20 text-primary-orange flex items-center justify-center shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-lg">lightbulb</span>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-primary-orange block mb-0.5">Chief's Secret Technique</span>
+                <p id="chef-secret-text" class="text-xs text-text-light/90 leading-relaxed">
+                  Deglaze the pan with a splash of dry white wine or chicken broth to lift the caramelized fond before adding the heavy cream.
+                </p>
+              </div>
+            </section>
+
+            <!-- Save & Action CTAs -->
+            <section class="flex flex-col gap-3 pt-2">
+              <button id="main-save-btn" onclick="toggleSaveCurrentRecipe()" class="btn-primary w-full py-4 text-xs font-bold uppercase tracking-wider shadow-lg shadow-primary-orange/30">
+                <span id="main-save-icon" class="material-symbols-outlined text-lg">bookmark</span>
+                <span id="main-save-label">SAVE RECIPE TO MY COLLECTION</span>
+              </button>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button onclick="startCookingModal()" class="btn-secondary w-full py-3.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all">
+                  <span class="material-symbols-outlined text-lg text-primary-orange">play_arrow</span>
+                  <span>COOK MODE</span>
+                </button>
+                <button onclick="shareRecipe()" class="btn-secondary btn-share-recipe w-full py-3.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:border-primary-orange/40 hover:text-primary-orange active:scale-95 transition-all">
+                  <span class="material-symbols-outlined text-lg text-primary-orange">share</span>
+                  <span>SHARE RECIPE</span>
+                </button>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- Right Column (lg:col-span-7): Title, Description, Checklist, Instructions -->
+          <div class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- Title & Description Section -->
+            <section class="surface-card rounded-2xl p-6 flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-primary-orange"></span>
+                  <span id="flavor-profile-badge" class="text-[11px] font-bold uppercase tracking-wider text-primary-orange">
+                    Rich, Creamy & Herbaceous
+                  </span>
+                </div>
+              </div>
+
+              <h1 id="recipe-title" class="font-outfit text-2xl md:text-3xl font-bold text-text-light leading-snug">
+                Creamy Tuscan Garlic Chicken
+              </h1>
+              <p id="recipe-desc" class="text-xs md:text-sm text-text-muted leading-relaxed">
+                Tender pan-seared cutlets smothered in a velvety garlic parmesan cream reduction with sun-dried tomatoes and baby spinach.
+              </p>
+            </section>
+
+            <!-- Ingredients Section -->
+            <section class="surface-card rounded-2xl p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <h2 class="font-outfit text-base md:text-lg font-bold text-text-light flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary-orange text-xl">checklist</span>
+                  Ingredients Checklist
+                </h2>
+                <span id="ingredients-count" class="text-xs text-primary-orange font-semibold">8 items</span>
+              </div>
+              <p class="text-xs text-text-muted">Check off items as you prep in your kitchen.</p>
+
+              <div id="ingredients-list" class="flex flex-col gap-2.5">
+                <!-- Populated dynamically by app.js -->
+              </div>
+            </section>
+
+            <!-- Step-by-Step Instructions -->
+            <section class="surface-card rounded-2xl p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <h2 class="font-outfit text-base md:text-lg font-bold text-text-light flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary-orange text-xl">menu_book</span>
+                  Step-by-Step Instructions
+                </h2>
+                <span id="steps-count" class="text-xs text-text-muted font-semibold">4 steps</span>
+              </div>
+
+              <div id="instructions-list" class="flex flex-col gap-3">
+                <!-- Populated dynamically by app.js -->
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </main>
+
+      <!-- Hands-Free Cooking Mode Modal -->
+      <div id="cooking-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col justify-between p-6 md:p-8 max-w-[460px] md:max-w-2xl mx-auto my-auto md:h-auto md:max-h-[85vh] md:rounded-3xl md:border md:border-white/15 hidden transition-all shadow-2xl">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-primary-orange animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-primary-orange">Active Cooking Mode</span>
+          </div>
+          <button onclick="closeCookingModal()" class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-white hover:bg-white/20">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+
+        <div class="flex-1 flex flex-col justify-center text-center my-6">
+          <span id="modal-step-badge" class="inline-block self-center px-4 py-1.5 rounded-xl bg-primary-orange/20 text-primary-orange text-xs font-bold uppercase tracking-widest mb-4">
+            Step 1 of 4
+          </span>
+          <h3 id="modal-step-title" class="font-outfit text-2xl font-bold text-white mb-3">Sear the Chicken</h3>
+          <p id="modal-step-text" class="text-sm text-text-muted leading-relaxed px-4">
+            Heat 1 tbsp olive oil in skillet. Brown chicken fillets for 4-5 minutes per side until deeply caramelized.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="modal-prev-btn" onclick="prevCookingStep()" class="btn-secondary flex-1 py-3 text-xs uppercase font-bold">Previous</button>
+          <button id="modal-next-btn" onclick="nextCookingStep()" class="btn-primary flex-1 py-3 text-xs uppercase font-bold">Next Step</button>
+        </div>
+      </div>
+
+      <!-- Interactive Share Modal -->
+      <div id="share-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden transition-all duration-300" onclick="if(event.target===this) closeShareModal()">
+        <div class="surface-card rounded-3xl p-6 max-w-md w-full border border-white/15 shadow-2xl relative flex flex-col gap-4 animate-in" onclick="event.stopPropagation()">
+          
+          <!-- Header -->
+          <div class="flex items-center justify-between pb-3 border-b border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-primary-orange"></span>
+              <h3 class="font-outfit text-base font-bold text-text-light">Share Recipe</h3>
+            </div>
+            <button onclick="closeShareModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 flex items-center justify-center text-text-muted hover:text-text-light transition-all active:scale-90" title="Close">
+              <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+
+          <!-- Recipe Preview Card -->
+          <div class="share-preview-card flex items-center gap-3.5 p-3 rounded-2xl bg-white/5 border border-white/10">
+            <img id="share-preview-img" src="" alt="Recipe" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-white/10 shadow-sm"/>
+            <div class="flex-1 min-w-0">
+              <span id="share-preview-meta" class="text-[10px] font-bold uppercase tracking-wider text-primary-orange block mb-0.5">DINNER • 25 MIN</span>
+              <h4 id="share-preview-title" class="font-outfit text-sm font-bold text-text-light truncate">Recipe Title</h4>
+              <p class="text-[11px] text-text-muted share-preview-subtitle">SmartChief AI Master Recipe</p>
+            </div>
+          </div>
+
+          <!-- Native Device Share Button (If supported by browser) -->
+          <div id="native-share-container" class="hidden">
+            <button onclick="triggerNativeShare()" class="btn-primary w-full py-3 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2 shadow-md shadow-primary-orange/30 active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-base">share</span>
+              <span>Share via Device Apps</span>
+            </button>
+          </div>
+
+          <!-- Quick Social Share Row -->
+          <div class="flex flex-col gap-2">
+            <span class="share-section-title text-[11px] font-semibold text-text-muted uppercase tracking-wider">Direct Social Share</span>
+            <div class="grid grid-cols-4 gap-2">
+              <button type="button" onclick="shareVia('whatsapp')" class="share-social-btn btn-whatsapp group" title="Share on WhatsApp">
+                <div class="share-icon-badge badge-whatsapp">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.11-.23-.17-.48-.3z"/>
+                  </svg>
+                </div>
+                <span class="share-social-label">WhatsApp</span>
+              </button>
+
+              <button type="button" onclick="shareVia('twitter')" class="share-social-btn btn-twitter group" title="Share on X / Twitter">
+                <div class="share-icon-badge badge-twitter">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </div>
+                <span class="share-social-label">Twitter / X</span>
+              </button>
+
+              <button type="button" onclick="shareVia('telegram')" class="share-social-btn btn-telegram group" title="Share on Telegram">
+                <div class="share-icon-badge badge-telegram">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.693c.46 0 .663-.211.921-.46l2.211-2.15 4.6 3.4c.848.468 1.46.227 1.672-.787l3.02-14.23c.31-1.242-.474-1.8-1.5-.788z"/>
+                  </svg>
+                </div>
+                <span class="share-social-label">Telegram</span>
+              </button>
+
+              <button type="button" onclick="shareVia('email')" class="share-social-btn btn-email group" title="Share via Email">
+                <div class="share-icon-badge badge-email">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                  </svg>
+                </div>
+                <span class="share-social-label">Email</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Copy Link Box -->
+          <div class="flex flex-col gap-1.5">
+            <span class="share-section-title text-[11px] font-semibold text-text-muted uppercase tracking-wider">Copy Link</span>
+            <div class="share-link-box flex items-center gap-2 p-1.5 rounded-xl bg-white/5 border border-white/10 focus-within:border-primary-orange transition-all">
+              <span class="material-symbols-outlined text-text-muted text-lg ml-2 shrink-0 share-link-icon">link</span>
+              <input id="share-link-input" type="text" readonly class="bg-transparent border-none outline-none text-xs text-text-light w-full p-0 truncate font-mono select-all focus:ring-0"/>
+              <button id="copy-share-btn" onclick="copyShareLink()" class="px-3.5 py-2 rounded-lg bg-primary-orange hover:bg-primary-glow text-white text-xs font-bold shrink-0 flex items-center gap-1 transition-all active:scale-95 shadow-sm shadow-primary-orange/30">
+                <span id="copy-share-icon" class="material-symbols-outlined text-sm">content_copy</span>
+                <span id="copy-share-text">Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Copy Recipe Summary CTA -->
+          <button onclick="copyFullRecipeText()" id="copy-recipe-text-btn" class="share-summary-btn w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-text-light flex items-center justify-center gap-1.5 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-sm text-primary-orange">assignment</span>
+            <span id="copy-recipe-text-label">Copy Ingredients & Steps as Text</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Dock (Mobile Only) -->
+    <nav class="glass-nav fixed bottom-0 left-0 right-0 z-40 py-2.5 px-6 max-w-[460px] mx-auto rounded-t-2xl flex justify-around items-center md:hidden">
+      <!-- Tab 1: Home -->
+      <a href="index.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">home</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Home</span>
+      </a>
+
+      <!-- Tab 2: AI Chief -->
+      <a href="ingredient-input.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">soup_kitchen</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">AI Chief</span>
+      </a>
+
+      <!-- Tab 3: Saved -->
+      <a href="saved-recipes.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">bookmark</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Saved</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>SmartChief — Modern Smart Recipe Companion</title>
+  <meta name="description" content="Discover smart recipes, cook with ingredients you have, and follow step-by-step guides with SmartChief AI."/>
+  
+  <!-- Immediate Theme Initializer (Prevents Theme Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem("smartchief_theme_mode") || localStorage.getItem("cooksmart_theme_mode") || "system";
+        var isDark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Brand Favicon & Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="shortcut icon" href="favicon.ico"/>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "canvas": "var(--color-canvas)",
+            "surface": "var(--color-surface)",
+            "surface-elevated": "var(--color-surface-elevated)",
+            "primary-orange": "#FF6B35",
+            "primary-glow": "#FF7A45",
+            "text-light": "var(--color-text-primary)",
+            "text-muted": "var(--color-text-secondary)"
+          },
+          borderRadius: {
+            "card": "20px"
+          },
+          fontFamily: {
+            "outfit": ["Outfit", "sans-serif"],
+            "sans": ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-canvas text-text-light font-sans antialiased min-h-screen">
+  
+  <div class="mobile-container">
+    
+    <!-- Page Viewport Shell for Smooth Transitions -->
+    <div id="page-viewport">
+      <!-- Top Header -->
+      <header class="glass-header sticky top-0 z-40 px-5 md:px-8 lg:px-12 py-3.5 flex items-center justify-between">
+        <!-- SmartChief Squared Logo & Brand Mark -->
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="logo-squared w-10 h-10 rounded-xl overflow-hidden border border-white/15 ring-2 ring-primary-orange/30 shadow-md flex items-center justify-center bg-surface shrink-0 group transition-transform active:scale-95" title="SmartChief Home">
+            <img src="logo.png" alt="SmartChief Logo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          </a>
+          <!-- Automatic Time-of-Day Greeting Display -->
+          <div class="flex flex-col select-none" id="greeting-display">
+            <div class="flex items-center gap-1.5">
+              <span class="font-outfit text-base font-bold text-text-light leading-tight">Smart<span class="text-primary-orange">Chief</span></span>
+              <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded-md bg-primary-orange/15 text-primary-orange border border-primary-orange/30">AI</span>
+            </div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span id="greeting-text" class="text-[11px] font-medium text-text-muted leading-none">
+                Good afternoon, Chief 👋
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex items-center gap-2 lg:gap-3">
+          <a href="index.html" class="desktop-nav-link active">
+            <span class="material-symbols-outlined text-lg">home</span>
+            <span>Home</span>
+          </a>
+          <a href="ingredient-input.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">soup_kitchen</span>
+            <span>AI Chief Synthesizer</span>
+          </a>
+          <a href="saved-recipes.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">bookmark</span>
+            <span>Saved Collection</span>
+          </a>
+        </nav>
+        
+        <!-- Merged Integrated Dark / Light Mode Toggle Button -->
+        <button onclick="ThemeEngine.toggleTheme()" class="theme-toggle-btn w-9 h-9 rounded-xl bg-surface border border-white/10 hover:border-primary-orange/40 hover:bg-white/10 flex items-center justify-center text-text-muted hover:text-primary-orange active:scale-90 transition-all shadow-sm group" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+          <span class="theme-icon material-symbols-outlined text-lg transition-transform duration-300 group-hover:rotate-45">dark_mode</span>
+        </button>
+      </header>
+
+      <!-- Main Content Body -->
+      <main class="flex-1 px-5 md:px-8 lg:px-12 pt-5 pb-28 md:pb-16 max-w-7xl mx-auto w-full flex flex-col gap-6">
+        
+        <!-- Search Bar -->
+        <section class="w-full">
+          <div class="surface-card rounded-2xl flex items-center px-4 py-3 focus-within:border-primary-orange transition-colors max-w-3xl mx-auto">
+            <span class="material-symbols-outlined text-text-muted mr-3">search</span>
+            <input id="search-input" type="text" placeholder="Search recipes, ingredients, tags (Press Enter to synthesize with AI)..." class="bg-transparent border-none outline-none text-text-light placeholder-text-muted w-full text-sm font-medium focus:ring-0 p-0" oninput="handleSearch(this.value)" onkeydown="if(event.key==='Enter') searchAndGenerateRecipe(this.value)"/>
+            <button onclick="clearSearch()" id="search-clear-btn" class="hidden text-text-muted hover:text-primary-orange mr-1">
+              <span class="material-symbols-outlined text-base">close</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Category Filter Carousel -->
+        <section class="w-full">
+          <div class="flex gap-2.5 overflow-x-auto hide-scrollbar -mx-5 px-5 md:mx-0 md:px-0 md:justify-center md:flex-wrap py-1" id="categories-container">
+            <button onclick="filterCategory('ALL', this)" class="category-btn active bg-primary-orange text-white px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap shadow-sm shadow-primary-orange/30 transition-all">🔥 ALL</button>
+            <button onclick="filterCategory('INDIAN', this)" class="category-btn surface-card text-text-muted hover:text-primary-orange px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all">🍛 INDIAN RECIPES</button>
+            <button onclick="filterCategory('BREAKFAST', this)" class="category-btn surface-card text-text-muted hover:text-primary-orange px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all">🍳 BREAKFAST</button>
+            <button onclick="filterCategory('QUICK', this)" class="category-btn surface-card text-text-muted hover:text-primary-orange px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all">⚡ QUICK & EASY</button>
+            <button onclick="filterCategory('HEALTHY', this)" class="category-btn surface-card text-text-muted hover:text-primary-orange px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all">🥗 HEALTHY</button>
+            <button onclick="filterCategory('DINNER', this)" class="category-btn surface-card text-text-muted hover:text-primary-orange px-4 py-2 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all">🍝 DINNER</button>
+          </div>
+        </section>
+
+        <!-- Quick Ingredient Generator Promo Banner -->
+        <section>
+          <div class="rounded-2xl p-4 bg-gradient-to-r from-[#241712] via-surface to-surface border border-primary-orange/30 flex items-center justify-between gap-3">
+            <div class="flex-1">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="px-2 py-0.5 rounded-md bg-primary-orange/20 text-primary-orange text-[10px] font-bold uppercase tracking-wider">AI Chief Engine</span>
+                <span class="text-xs text-emerald-400 font-bold">• 100% Dynamic</span>
+              </div>
+              <h3 id="time-banner-title" class="font-outfit text-sm font-bold text-text-light leading-tight">Got ingredients at home?</h3>
+              <p id="time-banner-subtitle" class="text-xs text-text-muted mt-0.5">SmartChief synthesizes innovative global recipes in seconds.</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <a href="ingredient-input.html" class="px-3.5 py-2.5 rounded-xl bg-primary-orange hover:bg-primary-glow text-white text-xs font-bold tracking-wider flex items-center gap-1.5 whitespace-nowrap shadow-md shadow-primary-orange/30 active:scale-95 transition-all">
+                <span>AI CHIEF</span>
+                <span class="material-symbols-outlined text-sm">auto_awesome</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Featured Recipe Hero Card -->
+        <section id="featured-section">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-outfit text-base font-bold text-text-light flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-primary-orange"></span>
+              Chief's Signature of the Day
+            </h2>
+            <span class="text-xs font-semibold text-primary-orange">Featured</span>
+          </div>
+
+          <div class="surface-card rounded-card overflow-hidden flex flex-col md:flex-row relative group">
+
+            <!-- Quick Save Button -->
+            <button onclick="toggleFavorite('tuscan-chicken', event)" class="fav-btn absolute top-3 right-3 z-10 w-9 h-9 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="tuscan-chicken" title="Save Recipe">
+              <span class="material-symbols-outlined text-lg">bookmark</span>
+            </button>
+
+            <!-- Hero Image -->
+            <a href="recipe-result.html?recipe=tuscan-chicken" class="block w-full md:w-1/2 h-52 md:h-80 relative overflow-hidden shrink-0">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPmlitRZy3vPh5WfosjsoLrH1BlaL-ssz7CBtBlKzkWKEv5MmaEZpi5sRiFZkJNRYMhQWt7-AhXS_Y6dw8drUFA6KlC5csD2Vw1T-U5xwLjl75TxgVq1k35SakOUFVGMYQdIz6VYn51qzK2-FUbiZppY95vbQbm4FAzRZE08SHIVZPmftSquXuWTv5BJ3g7WX2xgVmzUSiJ36gqxI5Lf6kk96u2c1vetx2xeIf0Kur38HcDzstQwMBXFtK3BixHLKHub1ItB72" alt="Creamy Tuscan Garlic Chicken" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            </a>
+
+            <!-- Details & Action -->
+            <div class="p-5 md:p-8 flex flex-col justify-between flex-1 gap-4">
+              <a href="recipe-result.html?recipe=tuscan-chicken" class="hover:text-primary-orange transition-colors">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="px-2.5 py-0.5 rounded-md bg-primary-orange/20 text-primary-orange text-[10px] font-bold uppercase tracking-wider">Chief's Master Pick</span>
+                  <span class="text-xs text-text-muted">• High Protein</span>
+                </div>
+                <h3 class="font-outfit text-xl md:text-2xl font-bold text-text-light leading-snug">Creamy Tuscan Garlic Chicken</h3>
+                <p class="text-xs md:text-sm text-text-muted line-clamp-2 md:line-clamp-3 mt-1.5 leading-relaxed">Tender pan-seared cutlets bathed in sun-dried tomato and aged parmesan cream reduction with baby spinach.</p>
+              </a>
+
+              <div class="flex items-center justify-between text-xs md:text-sm text-text-muted pt-3 border-t border-white/5">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-primary-orange">schedule</span>
+                  <span class="font-semibold text-text-light">25 min</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-primary-orange">restaurant</span>
+                  <span class="font-semibold text-text-light">Medium</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-primary-orange">local_fire_department</span>
+                  <span class="font-semibold text-text-light">420 kcal</span>
+                </div>
+              </div>
+
+              <a href="recipe-result.html?recipe=tuscan-chicken" class="btn-primary w-full py-3.5 text-xs uppercase tracking-wider font-bold shadow-lg shadow-primary-orange/20">
+                <span class="material-symbols-outlined text-lg">cooking</span>
+                COOK THIS DISH NOW
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Innovative Trending Section -->
+        <section>
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="font-outfit text-base md:text-lg font-bold text-text-light flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-primary-orange"></span>
+              Innovative Creations
+            </h2>
+            <a href="saved-recipes.html" class="text-xs font-semibold text-primary-orange hover:underline">View Saved</a>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 md:gap-5" id="trending-grid">
+            
+            <!-- Dish: Royal Shahi Paneer Butter Masala -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="INDIAN" data-title="Royal Shahi Paneer Butter Masala">
+              <button onclick="toggleFavorite('paneer-butter-masala', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="paneer-butter-masala" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=paneer-butter-masala" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80" alt="Royal Shahi Paneer Butter Masala" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=paneer-butter-masala" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Royal Shahi Paneer Masala</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 25 min
+                  </span>
+                  <span class="text-amber-400 font-semibold">410 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish: Hyderabadi Saffron Dum Chicken Biryani -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="INDIAN" data-title="Hyderabadi Saffron Dum Chicken Biryani">
+              <button onclick="toggleFavorite('hyderabadi-biryani', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="hyderabadi-biryani" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=hyderabadi-biryani" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80" alt="Hyderabadi Biryani" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=hyderabadi-biryani" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Hyderabadi Dum Biryani</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 35 min
+                  </span>
+                  <span class="text-amber-400 font-semibold">480 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish: Slow-Simmered Dal Makhani Noir -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="INDIAN" data-title="Slow-Simmered Dal Makhani Noir">
+              <button onclick="toggleFavorite('dal-makhani', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="dal-makhani" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=dal-makhani" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80" alt="Dal Makhani" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=dal-makhani" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Dal Makhani Noir</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 40 min
+                  </span>
+                  <span class="text-emerald-400 font-semibold">360 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 1: Torched Ponzu Miso Salmon Bowl -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="HEALTHY" data-title="Torched Ponzu Miso Salmon Bowl">
+              <button onclick="toggleFavorite('salmon-poke', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="salmon-poke" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=salmon-poke" class="w-full h-28 block overflow-hidden">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL00SpdN1POUYbrsVBbJZBMTS2u4blf0zbG3JzkB6N4CkHau3Bmbpp7Z6Bq208WZpHuSJ5ZsIRjIdWbdn6BWpQstwUaKvFIiSD4YYQ_82X9f-uXG_kLN1jRMDGRny2FvlGxDEmquy0-BAU_3fvnYJcl9QIB_UadbsrRUGLX6KH7Il2CCn0o3tPO_LBziBoTOTVX3tSiPX5WQQDK8zz--djE1YbFL6hE7aLPSzCVGNOqKzKySeunDY0rR940NTuC1te365VOX73" alt="Torched Miso Salmon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=salmon-poke" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Torched Ponzu Miso Salmon</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 15 min
+                  </span>
+                  <span class="text-emerald-400 font-semibold">380 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 2: Smoky Harissa & Feta Shakshuka -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="BREAKFAST" data-title="Smoky Harissa Shakshuka with Whipped Feta">
+              <button onclick="toggleFavorite('harissa-shakshuka', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="harissa-shakshuka" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=harissa-shakshuka" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1590412200988-a436970781fa?auto=format&fit=crop&w=800&q=80" alt="Harissa Shakshuka" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=harissa-shakshuka" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Smoky Harissa Shakshuka</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 15 min
+                  </span>
+                  <span class="text-amber-400 font-semibold">320 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 3: Garlic Chili-Crisp Biang Biang Noodles -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="QUICK" data-title="Garlic Chili-Crisp Biang Biang Noodles">
+              <button onclick="toggleFavorite('chili-crisp-noodles', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="chili-crisp-noodles" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=chili-crisp-noodles" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80" alt="Biang Biang Noodles" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=chili-crisp-noodles" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Chili-Crisp Biang Biang</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 12 min
+                  </span>
+                  <span class="text-emerald-400 font-semibold">410 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 4: Truffle Mushroom Risotto -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="DINNER" data-title="Black Truffle & Wild Morel Risotto">
+              <button onclick="toggleFavorite('mushroom-risotto', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="mushroom-risotto" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=mushroom-risotto" class="w-full h-28 block overflow-hidden">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZqZXWGECnDTCg4Ycp1Pk1_wRGvLmxv2SxQNWQCqKCovs7FAq3LOjX95DmkIDwpZ77p06o4sPNkSOzZh01FetHutHvZBfUCkHFnvxHkGfbnLSq8WNPaji95dpCAmvcxrUqEzlF6yXgsuN8NAzSXjJjeo2kIiW4A01qnn6n7ryUJfhJNfvCeWRFlboUIqyw6VzsDtwIE0x7Oei8yo03mctzO0Bmgytf7qSnuBzain5ICT7AiAj5drRc2DXB07SUGulydDa1-jkN" alt="Truffle Risotto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=mushroom-risotto" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Wild Morel Truffle Risotto</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 30 min
+                  </span>
+                  <span class="text-amber-400 font-semibold">440 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 5: Meyer Lemon & Thyme Salmon -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="HEALTHY" data-title="Pan-Seared Meyer Lemon & Thyme Salmon">
+              <button onclick="toggleFavorite('lemon-herb-salmon', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="lemon-herb-salmon" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=lemon-herb-salmon" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80" alt="Lemon Herb Salmon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=lemon-herb-salmon" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Meyer Lemon Thyme Salmon</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 15 min
+                  </span>
+                  <span class="text-emerald-400 font-semibold">410 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 6: Crispy Sesame Tofu & Bok Choy -->
+            <div class="surface-card rounded-2xl overflow-hidden flex flex-col relative group recipe-card" data-category="HEALTHY" data-title="Crispy Sesame Tofu & Ginger Bok Choy">
+              <button onclick="toggleFavorite('crispy-tofu-teriyaki', event)" class="fav-btn absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-primary-orange transition-all" data-recipe-id="crispy-tofu-teriyaki" title="Save">
+                <span class="material-symbols-outlined text-base">bookmark</span>
+              </button>
+              <a href="recipe-result.html?recipe=crispy-tofu-teriyaki" class="w-full h-28 block overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Sesame Tofu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+              </a>
+              <div class="p-3 flex flex-col flex-1">
+                <a href="recipe-result.html?recipe=crispy-tofu-teriyaki" class="hover:text-primary-orange transition-colors">
+                  <h4 class="font-outfit text-xs font-bold text-text-light leading-snug line-clamp-2">Crispy Sesame Ginger Tofu</h4>
+                </a>
+                <div class="mt-auto pt-2 flex items-center justify-between text-[11px] text-text-muted">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-primary-orange">schedule</span> 18 min
+                  </span>
+                  <span class="text-emerald-400 font-semibold">350 kcal</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="no-recipes-msg" class="hidden text-center py-8 text-text-muted text-sm flex flex-col items-center">
+            <p class="mb-3 text-text-muted">No matching recipes found in current collection.</p>
+            <button onclick="searchAndGenerateRecipe()" class="btn-primary inline-flex items-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-primary-orange/30 active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-sm">auto_awesome</span>
+              <span id="ai-generate-search-btn-text">Synthesize Custom AI Recipe</span>
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Bottom Navigation Dock (Mobile Only) -->
+    <nav class="glass-nav fixed bottom-0 left-0 right-0 z-50 py-2.5 px-6 max-w-[460px] mx-auto rounded-t-2xl flex justify-around items-center md:hidden">
+      <!-- Tab 1: Home (Active) -->
+      <a href="index.html" class="nav-tab-item flex flex-col items-center justify-center text-primary-orange font-bold active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl bg-primary-orange/15 flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">home</span>
+        </div>
+        <span class="text-[11px] font-bold tracking-tight mt-0.5">Home</span>
+      </a>
+
+      <!-- Tab 2: Ingredients / Generate -->
+      <a href="ingredient-input.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">soup_kitchen</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">AI Chief</span>
+      </a>
+
+      <!-- Tab 3: Saved Recipes -->
+      <a href="saved-recipes.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">bookmark</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Saved</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

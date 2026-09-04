@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>SmartChief — Intelligent Recipe Synthesizer</title>
+  <meta name="description" content="Add ingredients you have at home and let SmartChief's AI Chief Engine synthesize innovative culinary creations."/>
+
+  <!-- Immediate Theme Initializer (Prevents Theme Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem("smartchief_theme_mode") || localStorage.getItem("cooksmart_theme_mode") || "system";
+        var isDark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Brand Favicon & Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="shortcut icon" href="favicon.ico"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "canvas": "var(--color-canvas)",
+            "surface": "var(--color-surface)",
+            "surface-elevated": "var(--color-surface-elevated)",
+            "primary-orange": "#FF6B35",
+            "primary-glow": "#FF7A45",
+            "text-light": "var(--color-text-primary)",
+            "text-muted": "var(--color-text-secondary)"
+          },
+          borderRadius: {
+            "card": "20px"
+          },
+          fontFamily: {
+            "outfit": ["Outfit", "sans-serif"],
+            "sans": ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-canvas text-text-light font-sans antialiased min-h-screen">
+
+  <div class="mobile-container">
+    
+    <!-- Page Viewport Shell for Smooth Transitions -->
+    <div id="page-viewport">
+      <!-- Top Header -->
+      <header class="glass-header sticky top-0 z-40 px-5 md:px-8 lg:px-12 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <a href="index.html" class="w-9 h-9 rounded-xl text-text-muted hover:text-primary-orange bg-white/5 border border-white/10 flex items-center justify-center active:scale-95 transition-all" title="Back to Home">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+          </a>
+          <a href="index.html" class="w-9 h-9 rounded-xl overflow-hidden border border-white/15 ring-1 ring-primary-orange/30 shadow-sm shrink-0 flex items-center justify-center bg-surface group active:scale-95 transition-transform" title="SmartChief Home">
+            <img src="logo.png" alt="SmartChief Logo" class="w-full h-full object-cover group-hover:scale-105 transition-transform"/>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-primary-orange">SmartChief • AI Chief</span>
+            <h1 class="font-outfit text-base font-bold text-text-light leading-tight">Recipe Synthesizer</h1>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex items-center gap-2 lg:gap-3">
+          <a href="index.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">home</span>
+            <span>Home</span>
+          </a>
+          <a href="ingredient-input.html" class="desktop-nav-link active">
+            <span class="material-symbols-outlined text-lg">soup_kitchen</span>
+            <span>AI Chief Synthesizer</span>
+          </a>
+          <a href="saved-recipes.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">bookmark</span>
+            <span>Saved Collection</span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button onclick="loadChefInspiration()" class="px-3 py-1.5 rounded-xl bg-primary-orange/10 border border-primary-orange/30 text-primary-orange flex items-center gap-1.5 hover:bg-primary-orange/20 active:scale-95 transition-all text-xs font-bold" title="Suggest Ingredients">
+            <span class="material-symbols-outlined text-base">auto_awesome</span>
+            <span class="hidden sm:inline">Suggest</span>
+          </button>
+          <button onclick="clearAllIngredients()" class="text-xs font-semibold text-text-muted hover:text-primary-orange uppercase tracking-wider transition-colors py-1.5 px-2.5 rounded-lg hover:bg-white/5" title="Clear All">
+            Clear
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 px-5 md:px-8 lg:px-12 pt-6 pb-36 lg:pb-16 max-w-7xl mx-auto w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Left Column: Input, Active Basket, Quick Staples -->
+          <div class="lg:col-span-7 flex flex-col gap-6">
+            <!-- Headline -->
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="w-2 h-2 rounded-full bg-primary-orange"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-primary-orange">AI Kitchen Synthesizer</span>
+              </div>
+              <h2 class="font-outfit text-2xl md:text-3xl font-bold text-text-light leading-tight">What's in your<br/><span class="text-primary-orange">kitchen today?</span></h2>
+              <p class="text-xs md:text-sm text-text-muted mt-1.5">Combine any kitchen ingredients — our AI Chief synthesizes innovative gastronomic meals with pairing chemistry.</p>
+            </div>
+
+            <!-- Ingredient Input Field -->
+            <section>
+              <div class="surface-card rounded-2xl flex items-center pl-4 pr-1.5 py-1.5 focus-within:border-primary-orange focus-within:ring-1 focus-within:ring-primary-orange transition-all">
+                <span class="material-symbols-outlined text-text-muted mr-3">search</span>
+                <input id="ingredient-input" type="text" placeholder="Add ingredient (e.g., Paneer, Chicken, Garam Masala)..." class="bg-transparent border-none outline-none text-text-light placeholder-text-muted w-full text-sm font-medium focus:ring-0 p-0" onkeydown="if(event.key==='Enter') addIngredientFromInput()"/>
+                <button onclick="addIngredientFromInput()" class="h-11 px-5 rounded-xl bg-primary-orange hover:bg-primary-glow text-white font-bold flex items-center justify-center gap-1 active:scale-95 shadow-md shadow-primary-orange/30 transition-all">
+                  <span class="material-symbols-outlined text-xl">add</span>
+                  <span class="text-xs uppercase font-bold tracking-wider">Add</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- Selected Ingredients Card -->
+            <section class="surface-card rounded-card p-5 md:p-6 relative overflow-hidden">
+              <div class="absolute -top-10 -right-10 w-36 h-36 bg-primary-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div class="flex items-center justify-between mb-4 relative z-10">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary-orange text-xl">restaurant_menu</span>
+                  <h3 class="font-outfit text-base md:text-lg font-bold text-text-light">Active Ingredients Basket</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="synergy-score-badge" class="hidden bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold text-[10px] md:text-xs px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                    0% Synergy
+                  </span>
+                  <span id="items-badge" class="bg-primary-orange/15 border border-primary-orange/30 text-primary-orange text-xs font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                    0 items
+                  </span>
+                </div>
+              </div>
+
+              <!-- Tag Container -->
+              <div id="ingredient-tags" class="flex flex-wrap gap-2 relative z-10 min-h-[44px]">
+                <!-- Dynamic tags populated by JS -->
+              </div>
+
+              <div id="empty-ingredients-hint" class="text-center py-5 text-xs md:text-sm text-text-muted">
+                Your ingredient list is empty. Add ingredients above or tap popular staples below!
+              </div>
+            </section>
+
+            <!-- Quick Add Staples & Gourmet Items -->
+            <section class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-outfit text-sm md:text-base font-bold text-text-light flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-primary-orange text-base">bolt</span>
+                  Popular Kitchen Staples & Spices
+                </h3>
+                <span class="text-[11px] text-text-muted">Tap to add</span>
+              </div>
+
+              <div class="flex flex-wrap gap-2" id="staples-list">
+                <button onclick="addStaple('Paneer')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Paneer
+                </button>
+                <button onclick="addStaple('Garam Masala')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Garam Masala
+                </button>
+                <button onclick="addStaple('Basmati Rice')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Basmati Rice
+                </button>
+                <button onclick="addStaple('Kasuri Methi')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Kasuri Methi
+                </button>
+                <button onclick="addStaple('Salmon')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Salmon
+                </button>
+                <button onclick="addStaple('Chicken Breast')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Chicken Breast
+                </button>
+                <button onclick="addStaple('Miso')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Miso
+                </button>
+                <button onclick="addStaple('Chili Crisp')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Chili Crisp
+                </button>
+                <button onclick="addStaple('Avocado')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Avocado
+                </button>
+                <button onclick="addStaple('Truffle Oil')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Truffle Oil
+                </button>
+                <button onclick="addStaple('Feta')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Feta
+                </button>
+                <button onclick="addStaple('Eggs')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Eggs
+                </button>
+                <button onclick="addStaple('Rice')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Rice
+                </button>
+                <button onclick="addStaple('Noodles')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Noodles
+                </button>
+                <button onclick="addStaple('Mushrooms')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Mushrooms
+                </button>
+                <button onclick="addStaple('Lemon')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Lemon
+                </button>
+                <button onclick="addStaple('Garlic Confit')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Garlic Confit
+                </button>
+                <button onclick="addStaple('Baby Spinach')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Baby Spinach
+                </button>
+                <button onclick="addStaple('Fresh Thyme')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Fresh Thyme
+                </button>
+                <button onclick="addStaple('Tomatoes')" class="staple-btn text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/10 bg-surface text-text-muted hover:text-primary-orange hover:border-primary-orange/40 hover:bg-white/5 active:scale-95 transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-primary-orange">add</span> Tomatoes
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <!-- Right Column: Cuisine direction, Preferences, & Desktop Synthesis CTA -->
+          <div class="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-24">
+            <!-- Global Cuisine Direction Selector -->
+            <section class="surface-card rounded-2xl p-5 flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-outfit text-sm md:text-base font-bold text-text-light flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-primary-orange text-base">public</span>
+                  Global Culinary Direction
+                </h3>
+                <span class="text-[11px] text-text-muted">Influence style</span>
+              </div>
+
+              <div class="flex flex-wrap gap-2" id="cuisine-moods">
+                <button onclick="selectCuisineMood('ALL', this)" class="cuisine-pill active bg-primary-orange text-white px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm shadow-primary-orange/30 transition-all flex items-center gap-1">
+                  <span>🎲 Wild Fusion</span>
+                </button>
+                <button onclick="selectCuisineMood('INDIAN', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇮🇳 Royal Indian Spice</span>
+                </button>
+                <button onclick="selectCuisineMood('JAPANESE', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇯🇵 Tokyo Izakaya</span>
+                </button>
+                <button onclick="selectCuisineMood('ITALIAN', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇮🇹 Tuscan Coast</span>
+                </button>
+                <button onclick="selectCuisineMood('LATIN', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇲🇽 Smoky Latin Fire</span>
+                </button>
+                <button onclick="selectCuisineMood('FRENCH', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇫🇷 Haute Bistro</span>
+                </button>
+                <button onclick="selectCuisineMood('THAI', this)" class="cuisine-pill surface-card text-text-muted hover:text-primary-orange px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1">
+                  <span>🇹🇭 Bangkok Street</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- Culinary Constraints & Preferences -->
+            <section class="surface-card rounded-2xl p-5 flex flex-col gap-3">
+              <h3 class="font-outfit text-sm md:text-base font-bold text-text-light flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-primary-orange text-base">tune</span>
+                Dietary & Cooking Preferences
+              </h3>
+
+              <div class="grid grid-cols-2 gap-2.5" id="preferences-container">
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-primary-orange">timer</span>
+                  <span>Under 30 Mins</span>
+                </button>
+
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-primary-orange">fitness_center</span>
+                  <span>High Protein</span>
+                </button>
+
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-emerald-400">spa</span>
+                  <span>Vegetarian</span>
+                </button>
+
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-amber-400">nutrition</span>
+                  <span>Low Carb</span>
+                </button>
+
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-emerald-400">psychiatry</span>
+                  <span>🌿 Satvik / Jain</span>
+                </button>
+
+                <button onclick="togglePref(this)" class="pref-btn flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-surface text-xs font-semibold text-text-muted hover:text-primary-orange transition-all text-left">
+                  <span class="material-symbols-outlined text-base text-rose-500">local_fire_department</span>
+                  <span>🌶️ Desi Spicy Masala</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- Desktop Generation Card -->
+            <div class="hidden lg:flex flex-col gap-4 p-6 surface-card rounded-2xl border border-primary-orange/30 shadow-xl bg-gradient-to-br from-surface via-surface to-primary-orange/5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-primary-orange animate-ping"></span>
+                  <span class="text-xs font-bold text-primary-orange uppercase tracking-wider">AI Gastronomy Engine</span>
+                </div>
+                <span class="text-xs text-text-muted">Instant Synthesis</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                SmartChief pairs flavor compounds, calculates synergy scores, and formulates step-by-step instructions.
+              </p>
+              <button onclick="triggerGenerateRecipe()" class="btn-primary w-full py-4 text-sm uppercase tracking-wider font-bold shadow-xl shadow-primary-orange/40 pulse-cta flex items-center justify-center gap-2 opacity-60 generate-btn">
+                <span class="material-symbols-outlined text-xl">auto_awesome</span>
+                <span class="generate-btn-text">SELECT INGREDIENTS TO GENERATE</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </main>
+
+      <!-- Floating Action Button for Recipe Generation (Mobile Only) -->
+      <div class="fixed bottom-[74px] left-0 right-0 max-w-[460px] mx-auto px-5 z-40 lg:hidden">
+        <button id="generate-btn" onclick="triggerGenerateRecipe()" class="btn-primary w-full py-4 text-sm uppercase tracking-wider font-bold shadow-xl shadow-primary-orange/40 pulse-cta flex items-center justify-center gap-2 opacity-60 generate-btn">
+          <span class="material-symbols-outlined text-xl">auto_awesome</span>
+          <span id="generate-btn-text" class="generate-btn-text">SELECT INGREDIENTS TO GENERATE</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Dock (Mobile Only) -->
+    <nav class="glass-nav fixed bottom-0 left-0 right-0 z-50 py-2.5 px-6 max-w-[460px] mx-auto rounded-t-2xl flex justify-around items-center md:hidden">
+      <!-- Tab 1: Home -->
+      <a href="index.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">home</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Home</span>
+      </a>
+
+      <!-- Tab 2: AI Chief / Synthesizer (Active) -->
+      <a href="ingredient-input.html" class="nav-tab-item flex flex-col items-center justify-center text-primary-orange font-bold active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl bg-primary-orange/15 flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">soup_kitchen</span>
+        </div>
+        <span class="text-[11px] font-bold tracking-tight mt-0.5">AI Chief</span>
+      </a>
+
+      <!-- Tab 3: Saved Recipes -->
+      <a href="saved-recipes.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">bookmark</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Saved</span>
+      </a>
+    </nav>
+
+    <!-- Fullscreen Fake Animated Loading Page Overlay -->
+    <div id="recipe-loading-overlay" class="fake-loading-overlay">
+      <div class="loading-ambient-glow -top-16 -left-16"></div>
+      <div class="loading-ambient-glow -bottom-20 -right-20" style="animation-delay: -2s;"></div>
+
+      <div class="w-full max-w-[460px] min-h-[90vh] flex flex-col items-center justify-between p-6 relative z-10">
+        <!-- Top Bar -->
+        <header class="w-full flex items-center justify-between pt-2">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-primary-orange/20 border border-primary-orange/40 flex items-center justify-center text-primary-orange">
+              <span class="material-symbols-outlined text-sm animate-pulse">auto_awesome</span>
+            </div>
+            <span class="font-outfit text-xs font-extrabold uppercase tracking-widest text-primary-orange">
+              SmartChief AI Synthesizer
+            </span>
+          </div>
+
+          <button onclick="cancelRecipeLoading()" class="loading-cancel-btn text-xs text-text-muted hover:text-primary-orange transition-colors flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/20">
+            <span class="material-symbols-outlined text-sm">close</span>
+            <span>Cancel</span>
+          </button>
+        </header>
+
+        <!-- Center Stage Animation -->
+        <main class="w-full flex flex-col items-center justify-center my-auto py-8">
+          <div class="relative w-48 h-48 flex items-center justify-center mb-8">
+            <div class="orbital-ring orbital-ring-outer"></div>
+            <div class="orbital-ring orbital-ring-inner"></div>
+
+            <div class="simmer-spark" style="top: 40%; left: 30%; animation-delay: 0.2s;"></div>
+            <div class="simmer-spark" style="top: 35%; right: 28%; animation-delay: 0.8s;"></div>
+            <div class="simmer-spark" style="top: 60%; left: 35%; animation-delay: 1.4s;"></div>
+            <div class="simmer-spark" style="top: 55%; right: 32%; animation-delay: 1.9s;"></div>
+
+            <div class="culinary-core" id="overlay-core-icon-box">
+              <span id="overlay-core-icon" class="material-symbols-outlined text-white text-4xl transition-transform duration-500">
+                soup_kitchen
+              </span>
+            </div>
+
+            <div class="absolute inset-0 rounded-full border border-primary-orange/20 animate-ping pointer-events-none opacity-40"></div>
+          </div>
+
+          <div class="flex items-baseline gap-1 mb-2">
+            <span id="overlay-loading-percentage" class="font-outfit text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-orange via-amber-400 to-primary-orange">
+              0%
+            </span>
+            <span class="text-xs font-bold text-primary-orange/80 uppercase tracking-widest">
+              Synthesizing
+            </span>
+          </div>
+
+          <h2 id="overlay-loading-status-text" class="font-outfit text-lg font-bold text-center text-text-light px-4 min-h-[56px] flex items-center justify-center transition-all duration-300">
+            Connecting with SmartChief AI Engine...
+          </h2>
+
+          <div class="w-full max-w-[300px] mt-4 mb-6">
+            <div class="loading-progress-track">
+              <div id="overlay-loading-progress-bar" class="loading-progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="w-full flex flex-col items-center">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-2.5 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Harmonizing Selected Ingredients
+            </span>
+            <div id="overlay-loading-ingredients-chips" class="flex flex-wrap items-center justify-center gap-2 max-w-[340px]">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </main>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

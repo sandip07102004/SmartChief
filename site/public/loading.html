@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Synthesizing Gourmet Recipe — SmartChief AI</title>
+  <meta name="description" content="Simulating culinary synergy and creating your bespoke Michelin-inspired recipe."/>
+
+  <!-- Immediate Theme Initializer -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem("smartchief_theme_mode") || localStorage.getItem("cooksmart_theme_mode") || "dark";
+        var isDark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-orange": "#FF6B35",
+            "primary-glow": "#FF7A45",
+            "canvas": "var(--color-canvas)",
+            "surface": "var(--color-surface)",
+            "surface-elevated": "var(--color-surface-elevated)",
+            "text-light": "var(--color-text-primary)",
+            "text-muted": "var(--color-text-secondary)"
+          },
+          fontFamily: {
+            outfit: ["Outfit", "sans-serif"],
+            jakarta: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+
+<body class="loading-page bg-canvas text-text-light font-jakarta antialiased min-h-screen flex flex-col items-center justify-between p-6 relative overflow-hidden selection:bg-primary-orange/30">
+
+  <!-- Responsive Container Framing -->
+  <div class="w-full max-w-2xl min-h-screen flex flex-col items-center justify-between py-6 px-4 md:px-8 relative z-10">
+
+    <!-- Ambient Glowing Light Fields -->
+    <div class="loading-ambient-glow -top-16 -left-16"></div>
+    <div class="loading-ambient-glow -bottom-20 -right-20" style="animation-delay: -2s;"></div>
+
+    <!-- Top Bar: Brand, Theme Toggle & Cancel -->
+    <header class="w-full flex items-center justify-between pt-2">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-primary-orange/20 border border-primary-orange/40 flex items-center justify-center text-primary-orange">
+          <span class="material-symbols-outlined text-sm animate-pulse">auto_awesome</span>
+        </div>
+        <span class="font-outfit text-xs font-extrabold uppercase tracking-widest text-primary-orange">
+          SmartChief AI Synthesizer
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="ingredient-input.html" class="loading-cancel-btn text-xs text-text-muted hover:text-primary-orange transition-colors flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/20" title="Cancel & Return">
+          <span class="material-symbols-outlined text-sm">close</span>
+          <span>Cancel</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Center Stage: Core AI Synthesis Animation -->
+    <main class="w-full flex flex-col items-center justify-center my-auto py-8">
+
+      <!-- Animated Culinary Orb & Orbital Rings -->
+      <div class="relative w-48 h-48 flex items-center justify-center mb-8">
+        
+        <!-- Rotating Dashed Orbital Rings -->
+        <div class="orbital-ring orbital-ring-outer"></div>
+        <div class="orbital-ring orbital-ring-inner"></div>
+
+        <!-- Floating Simmer Particles/Sparks -->
+        <div class="simmer-spark" style="top: 40%; left: 30%; animation-delay: 0.2s;"></div>
+        <div class="simmer-spark" style="top: 35%; right: 28%; animation-delay: 0.8s;"></div>
+        <div class="simmer-spark" style="top: 60%; left: 35%; animation-delay: 1.4s;"></div>
+        <div class="simmer-spark" style="top: 55%; right: 32%; animation-delay: 1.9s;"></div>
+
+        <!-- Glowing Core Sphere with Icon -->
+        <div class="culinary-core group" id="core-icon-box">
+          <span id="core-icon" class="material-symbols-outlined text-white text-4xl transition-transform duration-500">
+            soup_kitchen
+          </span>
+        </div>
+
+        <!-- Pulsing Aura Ring -->
+        <div class="absolute inset-0 rounded-full border border-primary-orange/20 animate-ping pointer-events-none opacity-40"></div>
+      </div>
+
+      <!-- Live Percentage Counter -->
+      <div class="flex items-baseline gap-1 mb-2">
+        <span id="loading-percentage" class="font-outfit text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-orange via-amber-400 to-primary-orange">
+          0%
+        </span>
+        <span class="text-xs font-bold text-primary-orange/80 uppercase tracking-widest">
+          Synthesizing
+        </span>
+      </div>
+
+      <!-- Main Status Phase Message -->
+      <h2 id="loading-status-text" class="font-outfit text-lg font-bold text-center text-text-light px-4 min-h-[56px] flex items-center justify-center transition-all duration-300">
+        Connecting with SmartChief AI Engine...
+      </h2>
+
+      <!-- High-Tech Neon Shimmer Progress Bar -->
+      <div class="w-full max-w-[300px] mt-4 mb-6">
+        <div class="loading-progress-track">
+          <div id="loading-progress-bar" class="loading-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Selected Ingredients Cloud Display -->
+      <div class="w-full flex flex-col items-center">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-text-muted mb-2.5 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Harmonizing Pantry Elements
+        </span>
+        <div id="loading-ingredients-chips" class="flex flex-wrap items-center justify-center gap-2 max-w-[340px]">
+          <!-- Injected dynamically via script -->
+          <div class="floating-ingredient-chip">
+            <span>✨ Fresh Pantry Staples</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+
+
+  </div>
+
+  <!-- Shared App Core & Loading Automation -->
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Retrieve pending ingredients or active state
+      let ingredients = [];
+      let prefs = {};
+      let mood = "ALL";
+
+      try {
+        const pendingRaw = localStorage.getItem("smartchief_pending_generation") || localStorage.getItem("cooksmart_pending_generation");
+        if (pendingRaw) {
+          const parsed = JSON.parse(pendingRaw);
+          ingredients = parsed.ingredients || [];
+          prefs = parsed.preferences || {};
+          mood = parsed.cuisine || "ALL";
+        }
+      } catch (e) {}
+
+      if (!ingredients || ingredients.length === 0) {
+        ingredients = ["Garlic", "Extra Virgin Olive Oil", "Fresh Basil", "Parmesan", "Heirloom Tomatoes"];
+      }
+
+      // Populate ingredient chips
+      const chipsContainer = document.getElementById("loading-ingredients-chips");
+      if (chipsContainer && ingredients.length > 0) {
+        chipsContainer.innerHTML = ingredients.map((ing, idx) => {
+          const icons = ["🧄", "🌿", "🍅", "🧀", "🧅", "🥑", "🍋", "🌶️", "🧈", "🥩", "🍗", "🥕"];
+          const icon = icons[idx % icons.length];
+          return `<div class="floating-ingredient-chip" style="animation-delay: ${idx * 0.15}s;">
+            <span>${icon}</span>
+            <span>${ing}</span>
+          </div>`;
+        }).join("");
+      }
+
+      // Step-by-step phases
+      const phases = [
+        {
+          pct: 22,
+          text: "🔍 Analyzing ingredient synergy & flavor affinity...",
+          thought: "Mapping volatile aromatic compounds and pantry compatibility index...",
+          icon: "science"
+        },
+        {
+          pct: 48,
+          text: "🌿 Calibrating heat dynamics, herbs & global aromatics...",
+          thought: "Simulating fat emulsification and aromatic blooming for maximum savoriness...",
+          icon: "skillet"
+        },
+        {
+          pct: 78,
+          text: "🔥 Perfecting chief technique, texture & seasoning...",
+          thought: "Balancing savory umami fond with crispy textural contrasts...",
+          icon: "restaurant"
+        },
+        {
+          pct: 95,
+          text: "✨ Synthesizing master plating guide & pairing...",
+          thought: "Pairing crisp acid notes and formulating final finishing touch...",
+          icon: "auto_awesome"
+        },
+        {
+          pct: 100,
+          text: "🎉 Recipe Perfected! Revealing Master Guide...",
+          thought: "Dish complete. Formatting ingredients, timing and step-by-step instructions...",
+          icon: "check_circle"
+        }
+      ];
+
+      const pctEl = document.getElementById("loading-percentage");
+      const barEl = document.getElementById("loading-progress-bar");
+      const statusEl = document.getElementById("loading-status-text");
+      const iconEl = document.getElementById("core-icon");
+
+      let currentPct = 0;
+      const targetDuration = 3000;
+      const intervalMs = 30;
+      const stepIncrement = 100 / (targetDuration / intervalMs);
+
+      let generatedRecipeId = null;
+
+      // Background recipe preparation in parallel
+      (async function() {
+        try {
+          let aiRecipe;
+          if (typeof GeminiChefService !== "undefined") {
+            aiRecipe = await GeminiChefService.generateRecipe(ingredients, prefs, mood);
+          }
+          if (!aiRecipe && typeof ChefEngine !== "undefined") {
+            const concepts = ChefEngine.synthesizeConcepts(ingredients, prefs, mood);
+            aiRecipe = concepts[0];
+          }
+          if (aiRecipe) {
+            generatedRecipeId = aiRecipe.id;
+            const otherConcepts = typeof ChefEngine !== "undefined"
+              ? ChefEngine.synthesizeConcepts(ingredients, prefs, mood)
+              : [aiRecipe];
+            CookSmartStore.storeActiveConcepts([aiRecipe, otherConcepts[1] || aiRecipe, otherConcepts[2] || aiRecipe]);
+            CookSmartStore.storeGeneratedRecipe(aiRecipe);
+          }
+        } catch (err) {
+          console.warn("Background recipe generation fallback:", err);
+          if (typeof ChefEngine !== "undefined") {
+            const concepts = ChefEngine.synthesizeConcepts(ingredients, prefs, mood);
+            CookSmartStore.storeActiveConcepts(concepts);
+            CookSmartStore.storeGeneratedRecipe(concepts[0]);
+            generatedRecipeId = concepts[0].id;
+          }
+        }
+      })();
+
+      // Smooth progression timer
+      const timer = setInterval(() => {
+        currentPct += stepIncrement;
+        if (currentPct >= 100) {
+          currentPct = 100;
+          clearInterval(timer);
+        }
+
+        const rounded = Math.floor(currentPct);
+        if (pctEl) pctEl.textContent = `${rounded}%`;
+        if (barEl) barEl.style.width = `${rounded}%`;
+
+        const currentPhase = phases.find(p => rounded <= p.pct) || phases[phases.length - 1];
+        if (statusEl && statusEl.textContent !== currentPhase.text) {
+          statusEl.textContent = currentPhase.text;
+        }
+        if (iconEl && currentPhase.icon) {
+          iconEl.textContent = currentPhase.icon;
+        }
+
+        if (rounded === 100) {
+          if (iconEl) {
+            iconEl.classList.add("scale-125");
+            iconEl.style.color = "#10B981";
+          }
+          setTimeout(() => {
+            const finalId = generatedRecipeId || "tuscan-chicken";
+            window.location.href = `recipe-result.html?recipe=${encodeURIComponent(finalId)}`;
+          }, 450);
+        }
+      }, intervalMs);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CookSmart Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#261814",
+                        "on-tertiary-container": "#003744",
+                        "on-primary-fixed-variant": "#832600",
+                        "tertiary-container": "#00a7cb",
+                        "surface-container-highest": "#41312c",
+                        "surface-container-high": "#352722",
+                        "secondary-fixed": "#dfe2ec",
+                        "on-surface": "#f7ddd5",
+                        "on-secondary-fixed": "#181c23",
+                        "outline-variant": "#594139",
+                        "primary-fixed-dim": "#ffb59d",
+                        "on-tertiary": "#003543",
+                        "outline": "#a98a80",
+                        "inverse-on-surface": "#3c2d28",
+                        "secondary-fixed-dim": "#c3c6d0",
+                        "inverse-surface": "#f7ddd5",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "on-secondary-fixed-variant": "#43474f",
+                        "tertiary-fixed": "#b5ebff",
+                        "background": "#1d100c",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "primary-container": "#ff6b35",
+                        "on-tertiary-fixed": "#001f28",
+                        "surface-container-lowest": "#170b08",
+                        "on-primary": "#5d1900",
+                        "tertiary": "#59d5fb",
+                        "on-secondary": "#2d3138",
+                        "surface-dim": "#1d100c",
+                        "surface-container": "#2a1c18",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#ffb59d",
+                        "on-secondary-container": "#b2b5be",
+                        "secondary-container": "#43474f",
+                        "surface-variant": "#41312c",
+                        "surface": "#1d100c",
+                        "on-background": "#f7ddd5",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#5f1900",
+                        "primary": "#ffb59d",
+                        "on-surface-variant": "#e1bfb5",
+                        "on-primary-fixed": "#390c00",
+                        "surface-bright": "#463630",
+                        "inverse-primary": "#ab3500",
+                        "secondary": "#c3c6d0",
+                        "app-bg": "#101318",
+                        "app-surface": "#191D24"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "card": "20px"
+                    },
+                    "spacing": {
+                        "stack-gap-lg": "24px",
+                        "stack-gap-md": "16px",
+                        "container-padding": "20px",
+                        "stack-gap-sm": "8px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Outfit"],
+                        "title-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Outfit"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.03em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #101318; color: #f7ddd5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .surface-card { background-color: #191D24; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-overlay { background: rgba(25, 29, 36, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen pb-24 font-body-sm text-body-sm">
+<!-- TopAppBar -->
+<header class="glass-overlay w-full top-0 sticky z-50 flex items-center justify-between px-container-padding py-stack-gap-md w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/10">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A high-quality, professional headshot of a young chef wearing a crisp white apron against a dark, moody charcoal background. The lighting is dramatic yet flattering, emphasizing a modern culinary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNhovlqbiDGUJRGZWLqAMqr8VcvpULipAf9azzhVtqQVOWuljKzOqj6XzROSMmUvodNvaxctfQskSZ6Mh5Go1XLxoiNzHUkQYKwNLv_t4Zn80RuAtPm-5oyTD7sGolxfW2FPbqE84foHIg8NAqV1u5MdhG4AhRkQjZV3EqsdKptFdKN9kL15m9_GGi35xnE-iDErsn5tr-nWT_TnO3KU_N08wRpBFgPMwMv_iQGxNOWXWD5nZwHjgpWJsSAfccgGUMwriM9hmo"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Good Morning, Chef</h1>
+</div>
+<button class="p-2 rounded-full hover:opacity-80 transition-opacity active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="px-container-padding pt-4 flex flex-col gap-stack-gap-lg">
+<!-- Search -->
+<section class="flex gap-2">
+<div class="flex-1 surface-card rounded-xl flex items-center px-4 py-3 focus-within:border-[#FF6B35] transition-colors">
+<span class="material-symbols-outlined text-[#94A3B8] mr-3" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none text-on-surface placeholder-[#94A3B8] w-full font-body-lg text-body-lg focus:ring-0 p-0" placeholder="Search recipes, ingredients..." type="text"/>
+</div>
+<button class="surface-card rounded-xl p-3 flex items-center justify-center hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="tune">tune</span>
+</button>
+</section>
+<!-- Categories -->
+<section class="flex gap-3 overflow-x-auto hide-scrollbar pb-1 -mx-container-padding px-container-padding">
+<button class="bg-[#FF6B35] text-white px-5 py-2 rounded-full font-label-caps text-label-caps whitespace-nowrap">ALL</button>
+<button class="surface-card px-5 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:bg-white/5 transition-colors whitespace-nowrap">BREAKFAST</button>
+<button class="surface-card px-5 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:bg-white/5 transition-colors whitespace-nowrap">QUICK &amp; EASY</button>
+<button class="surface-card px-5 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:bg-white/5 transition-colors whitespace-nowrap">HEALTHY</button>
+<button class="surface-card px-5 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:bg-white/5 transition-colors whitespace-nowrap">DINNER</button>
+<button class="surface-card px-5 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:bg-white/5 transition-colors whitespace-nowrap">DESSERTS</button>
+</section>
+<!-- Hero Recipe -->
+<section>
+<h2 class="font-title-md text-title-md mb-4 text-on-surface">Featured Recipe of the Day</h2>
+<div class="surface-card rounded-card overflow-hidden flex flex-col relative group">
+<div class="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[#FF6B35] text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps">4.9</span>
+</div>
+<div class="w-full h-48 relative">
+<img alt="Creamy Tuscan Garlic Chicken" class="w-full h-full object-cover" data-alt="A professional top-down food photography shot of Creamy Tuscan Garlic Chicken served in a rustic cast iron skillet. The creamy sauce is rich with sun-dried tomatoes and spinach. The background is a dark, moody charcoal slate surface, highlighting the vibrant saffron and warm tones of the dish. Professional lighting creates appetizing highlights on the sauce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPmlitRZy3vPh5WfosjsoLrH1BlaL-ssz7CBtBlKzkWKEv5MmaEZpi5sRiFZkJNRYMhQWt7-AhXS_Y6dw8drUFA6KlC5csD2Vw1T-U5xwLjl75TxgVq1k35SakOUFVGMYQdIz6VYn51qzK2-FUbiZppY95vbQbm4FAzRZE08SHIVZPmftSquXuWTv5BJ3g7WX2xgVmzUSiJ36gqxI5Lf6kk96u2c1vetx2xeIf0Kur38HcDzstQwMBXFtK3BixHLKHub1ItB72"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#191D24] to-transparent"></div>
+</div>
+<div class="p-4 pt-0 flex flex-col gap-3 relative z-10">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Creamy Tuscan Garlic Chicken</h3>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 25 min</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="restaurant">restaurant</span> Medium</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span> 420 kcal</div>
+</div>
+<button class="mt-2 bg-[#FF6B35] text-white w-full py-3 rounded-full font-label-caps text-label-caps flex justify-center items-center gap-2 hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined" data-icon="cooking">cooking</span> COOK NOW
+                    </button>
+</div>
+</div>
+</section>
+<!-- Trending Grid -->
+<section>
+<div class="flex justify-between items-end mb-4">
+<h2 class="font-title-md text-title-md text-on-surface">Trending Now</h2>
+<button class="font-body-sm text-body-sm text-[#FF6B35] hover:underline">See all</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Card 1 -->
+<div class="surface-card rounded-xl overflow-hidden flex flex-col relative group pb-3">
+<button class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-[#FF6B35] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="favorite">favorite</span>
+</button>
+<div class="w-full h-32">
+<img alt="Spicy Salmon Poke Bowl" class="w-full h-full object-cover" data-alt="A vibrant, fresh Spicy Salmon Poke Bowl presented in a matte black ceramic bowl against a dark slate background. The dish features brightly colored cubed salmon, bright green edamame, and vibrant orange mango. High contrast culinary lighting accentuates the freshness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL00SpdN1POUYbrsVBbJZBMTS2u4blf0zbG3JzkB6N4CkHau3Bmbpp7Z6Bq208WZpHuSJ5ZsIRjIdWbdn6BWpQstwUaKvFIiSD4YYQ_82X9f-uXG_kLN1jRMDGRny2FvlGxDEmquy0-BAU_3fvnYJcl9QIB_UadbsrRUGLX6KH7Il2CCn0o3tPO_LBziBoTOTVX3tSiPX5WQQDK8zz--djE1YbFL6hE7aLPSzCVGNOqKzKySeunDY0rR940NTuC1te365VOX73"/>
+</div>
+<div class="px-3 pt-3 flex flex-col flex-1">
+<h4 class="font-body-lg text-body-lg font-bold leading-tight mb-2 line-clamp-2">Spicy Salmon Poke Bowl</h4>
+<div class="mt-auto flex items-center text-on-surface-variant font-label-caps text-[10px] gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 15 min
+                        </div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="surface-card rounded-xl overflow-hidden flex flex-col relative group pb-3">
+<button class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:text-[#FF6B35] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="favorite">favorite</span>
+</button>
+<div class="w-full h-32">
+<img alt="Truffle Mushroom Risotto" class="w-full h-full object-cover" data-alt="A close-up food shot of creamy Truffle Mushroom Risotto garnished with fresh thyme and shaved parmesan. The dish rests on a dark wooden table. The lighting is moody and warm, highlighting the earthy tones and creamy texture of the culinary creation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZqZXWGECnDTCg4Ycp1Pk1_wRGvLmxv2SxQNWQCqKCovs7FAq3LOjX95DmkIDwpZ77p06o4sPNkSOzZh01FetHutHvZBfUCkHFnvxHkGfbnLSq8WNPaji95dpCAmvcxrUqEzlF6yXgsuN8NAzSXjJjeo2kIiW4A01qnn6n7ryUJfhJNfvCeWRFlboUIqyw6VzsDtwIE0x7Oei8yo03mctzO0Bmgytf7qSnuBzain5ICT7AiAj5drRc2DXB07SUGulydDa1-jkN"/>
+</div>
+<div class="px-3 pt-3 flex flex-col flex-1">
+<h4 class="font-body-lg text-body-lg font-bold leading-tight mb-2 line-clamp-2">Truffle Mushroom Risotto</h4>
+<div class="mt-auto flex items-center text-on-surface-variant font-label-caps text-[10px] gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 35 min
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container/90 backdrop-blur-xl border-t border-white/10 fixed bottom-0 w-full z-50 rounded-t-xl flex justify-around items-center px-4 py-3 pb-safe w-full md:hidden">
+<button class="flex flex-col items-center justify-center text-primary font-bold bg-primary-container/10 rounded-xl px-4 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-caps text-label-caps mt-1">Generate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="font-label-caps text-label-caps mt-1">Saved</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

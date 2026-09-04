@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>SmartChief — Saved Recipes Grid</title>
+  <meta name="description" content="Your curated collection of saved recipes and favorite kitchen inspirations."/>
+
+  <!-- Immediate Theme Initializer (Prevents Theme Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem("smartchief_theme_mode") || localStorage.getItem("cooksmart_theme_mode") || "system";
+        var isDark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Brand Favicon & Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="shortcut icon" href="favicon.ico"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "canvas": "var(--color-canvas)",
+            "surface": "var(--color-surface)",
+            "surface-elevated": "var(--color-surface-elevated)",
+            "primary-orange": "#FF6B35",
+            "primary-glow": "#FF7A45",
+            "text-light": "var(--color-text-primary)",
+            "text-muted": "var(--color-text-secondary)"
+          },
+          borderRadius: {
+            "card": "20px"
+          },
+          fontFamily: {
+            "outfit": ["Outfit", "sans-serif"],
+            "sans": ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-canvas text-text-light font-sans antialiased min-h-screen">
+
+  <div class="mobile-container pb-28 md:pb-16">
+    
+    <!-- Page Viewport Shell for Smooth Transitions -->
+    <div id="page-viewport">
+      <!-- Top Header -->
+      <header class="glass-header sticky top-0 z-40 px-5 md:px-8 lg:px-12 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <a href="index.html" class="w-9 h-9 rounded-xl text-text-muted hover:text-primary-orange bg-white/5 border border-white/10 flex items-center justify-center active:scale-95 transition-all" title="Back">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+          </a>
+          <a href="index.html" class="w-9 h-9 rounded-xl overflow-hidden border border-white/15 ring-1 ring-primary-orange/30 shadow-sm shrink-0 flex items-center justify-center bg-surface group active:scale-95 transition-transform" title="SmartChief Home">
+            <img src="logo.png" alt="SmartChief Logo" class="w-full h-full object-cover group-hover:scale-105 transition-transform"/>
+          </a>
+          <div class="flex items-center gap-2">
+            <h1 class="font-outfit text-base font-bold text-text-light leading-tight">Saved Recipes</h1>
+            <span id="saved-badge" class="bg-primary-orange/20 border border-primary-orange/40 text-primary-orange rounded-lg px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
+              2 SAVED
+            </span>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex items-center gap-2 lg:gap-3">
+          <a href="index.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">home</span>
+            <span>Home</span>
+          </a>
+          <a href="ingredient-input.html" class="desktop-nav-link">
+            <span class="material-symbols-outlined text-lg">soup_kitchen</span>
+            <span>AI Chief Synthesizer</span>
+          </a>
+          <a href="saved-recipes.html" class="desktop-nav-link active">
+            <span class="material-symbols-outlined text-lg">bookmark</span>
+            <span>Saved Collection</span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-1.5 text-text-muted">
+          <a href="ingredient-input.html" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:text-primary-orange hover:bg-white/10 active:scale-95 transition-all" title="Add Ingredients">
+            <span class="material-symbols-outlined text-lg">add</span>
+          </a>
+          <button onclick="toggleSearchRow()" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:text-primary-orange hover:bg-white/10 active:scale-95 transition-all" title="Filter / Search">
+            <span class="material-symbols-outlined text-lg">tune</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 px-5 md:px-8 lg:px-12 pt-6 pb-28 md:pb-12 max-w-7xl mx-auto w-full flex flex-col gap-6">
+
+        <!-- Hidden Search Row (Expandable) -->
+        <section id="saved-search-row" class="hidden w-full max-w-2xl mx-auto">
+          <div class="surface-card rounded-2xl flex items-center px-4 py-2.5 focus-within:border-primary-orange transition-colors">
+            <span class="material-symbols-outlined text-text-muted mr-3 text-lg">search</span>
+            <input id="filter-search-input" type="text" placeholder="Filter saved collection..." class="bg-transparent border-none outline-none text-text-light placeholder-text-muted w-full text-xs font-medium focus:ring-0 p-0" oninput="filterByQuery(this.value)"/>
+          </div>
+        </section>
+
+        <!-- Category Filter Pills -->
+        <section class="w-full">
+          <div class="flex gap-2 overflow-x-auto hide-scrollbar -mx-5 px-5 md:mx-0 md:px-0 md:justify-center md:flex-wrap py-1" id="filter-pills">
+            <button onclick="filterSavedCategory('ALL', this)" class="pill-btn active px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide bg-primary-orange text-white shadow-sm shadow-primary-orange/30 whitespace-nowrap active:scale-95 transition-all">
+              All Saved
+            </button>
+            <button onclick="filterSavedCategory('FAVORITES', this)" class="pill-btn surface-card text-text-muted hover:text-primary-orange px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap active:scale-95 transition-all">
+              Favorites
+            </button>
+            <button onclick="filterSavedCategory('INDIAN', this)" class="pill-btn surface-card text-text-muted hover:text-primary-orange px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap active:scale-95 transition-all">
+              Indian Classics
+            </button>
+            <button onclick="filterSavedCategory('QUICK', this)" class="pill-btn surface-card text-text-muted hover:text-primary-orange px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap active:scale-95 transition-all">
+              Quick Meals
+            </button>
+            <button onclick="filterSavedCategory('DINNER', this)" class="pill-btn surface-card text-text-muted hover:text-primary-orange px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap active:scale-95 transition-all">
+              Dinner
+            </button>
+            <button onclick="filterSavedCategory('HEALTHY', this)" class="pill-btn surface-card text-text-muted hover:text-primary-orange px-4 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap active:scale-95 transition-all">
+              Healthy
+            </button>
+          </div>
+        </section>
+
+        <!-- Multi-Column Responsive Recipe Grid -->
+        <section class="w-full">
+          <div id="saved-recipes-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 md:gap-5">
+            <!-- Dynamic cards rendered by app.js -->
+          </div>
+
+          <!-- Empty State Container -->
+          <div id="empty-state" class="hidden flex-col items-center justify-center text-center py-16 px-4">
+            <div class="w-16 h-16 rounded-2xl bg-primary-orange/10 border border-primary-orange/20 text-primary-orange flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined text-3xl">bookmark_border</span>
+            </div>
+            <h3 class="font-outfit text-lg font-bold text-text-light mb-1">No Saved Recipes Yet</h3>
+            <p class="text-xs text-text-muted max-w-xs mb-6">
+              Explore chief-curated meals or synthesize a new dish with SmartChief AI to save here.
+            </p>
+            <div class="flex flex-col gap-2 w-full max-w-xs">
+              <a href="index.html" class="btn-primary py-3 text-xs uppercase font-bold tracking-wider">
+                <span class="material-symbols-outlined text-base">explore</span>
+                EXPLORE DISCOVER FEED
+              </a>
+              <a href="ingredient-input.html" class="btn-secondary py-3 text-xs uppercase font-bold tracking-wider">
+                <span class="material-symbols-outlined text-base">auto_awesome</span>
+                CREATE WITH AI CHIEF
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Bottom Navigation Dock (Mobile Only) -->
+    <nav class="glass-nav fixed bottom-0 left-0 right-0 z-40 py-2.5 px-6 max-w-[460px] mx-auto rounded-t-2xl flex justify-around items-center md:hidden">
+      <!-- Tab 1: Home -->
+      <a href="index.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">home</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">Home</span>
+      </a>
+
+      <!-- Tab 2: AI Chief -->
+      <a href="ingredient-input.html" class="nav-tab-item flex flex-col items-center justify-center text-text-muted hover:text-primary-orange active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">soup_kitchen</span>
+        </div>
+        <span class="text-[11px] font-semibold tracking-tight mt-0.5">AI Chief</span>
+      </a>
+
+      <!-- Tab 3: Saved (Active) -->
+      <a href="saved-recipes.html" class="nav-tab-item flex flex-col items-center justify-center text-primary-orange font-bold active:scale-95 transition-all">
+        <div class="nav-tab-pill w-10 h-7 rounded-xl bg-primary-orange/15 flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+        </div>
+        <span class="text-[11px] font-bold tracking-tight mt-0.5">Saved</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

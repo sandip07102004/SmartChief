@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>CookSmart - Pantry</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary-fixed-dim": "#ffb59d",
+                "on-error-container": "#ffdad6",
+                "primary": "#ffb59d",
+                "on-tertiary-fixed": "#001f28",
+                "surface-variant": "#41312c",
+                "outline": "#a98a80",
+                "on-tertiary-container": "#003744",
+                "surface-bright": "#463630",
+                "on-secondary-fixed": "#181c23",
+                "inverse-on-surface": "#3c2d28",
+                "surface-container-high": "#352722",
+                "secondary": "#c3c6d0",
+                "tertiary-fixed-dim": "#59d5fb",
+                "secondary-container": "#43474f",
+                "on-secondary-fixed-variant": "#43474f",
+                "on-tertiary-fixed-variant": "#004e60",
+                "on-tertiary": "#003543",
+                "surface-container": "#2a1c18",
+                "error": "#ffb4ab",
+                "outline-variant": "#594139",
+                "inverse-surface": "#f7ddd5",
+                "tertiary-container": "#00a7cb",
+                "surface-container-low": "#261814",
+                "surface-container-highest": "#41312c",
+                "surface-container-lowest": "#170b08",
+                "on-surface": "#f7ddd5",
+                "inverse-primary": "#ab3500",
+                "on-secondary": "#2d3138",
+                "on-background": "#f7ddd5",
+                "on-secondary-container": "#b2b5be",
+                "surface": "#1d100c",
+                "on-error": "#690005",
+                "surface-dim": "#1d100c",
+                "on-primary-fixed-variant": "#832600",
+                "tertiary": "#59d5fb",
+                "secondary-fixed-dim": "#c3c6d0",
+                "on-primary-container": "#5f1900",
+                "error-container": "#93000a",
+                "on-primary-fixed": "#390c00",
+                "surface-tint": "#ffb59d",
+                "on-primary": "#5d1900",
+                "on-surface-variant": "#e1bfb5",
+                "background": "#1d100c",
+                "secondary-fixed": "#dfe2ec",
+                "primary-fixed": "#ffdbd0",
+                "primary-container": "#ff6b35",
+                "tertiary-fixed": "#b5ebff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "stack-gap-lg": "24px",
+                "container-padding": "20px",
+                "unit": "4px",
+                "gutter": "16px",
+                "stack-gap-sm": "8px",
+                "stack-gap-md": "16px"
+              },
+              "fontFamily": {
+                "headline-lg-mobile": ["Outfit"],
+                "title-md": ["Plus Jakarta Sans"],
+                "label-caps": ["Plus Jakarta Sans"],
+                "body-sm": ["Plus Jakarta Sans"],
+                "body-lg": ["Plus Jakarta Sans"],
+                "display-lg": ["Outfit"],
+                "headline-lg": ["Outfit"]
+              },
+              "fontSize": {
+                "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                "title-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400"}],
+                "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for cleaner mobile look */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(42, 28, 24, 0.9) 0%, rgba(38, 24, 20, 0.95) 100%);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen relative pb-40 font-body-lg text-body-lg antialiased">
+<!-- TopAppBar JSON Component -->
+<header class="fixed top-0 w-full z-50 border-b border-white/10 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex items-center justify-between px-container-padding h-16 transition-all duration-300">
+<div class="flex items-center gap-3">
+<button aria-label="Go back" class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">CookSmart</span>
+</div>
+<div>
+<!-- Trailing slot empty as per JSON -->
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-container-padding flex flex-col gap-stack-gap-lg">
+<!-- Page Header -->
+<div class="flex items-end justify-between">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background leading-tight">What's in your<br/>pantry?</h1>
+<button class="font-label-caps text-label-caps text-outline hover:text-primary transition-colors uppercase tracking-wider mb-2">Clear all</button>
+</div>
+<!-- Search Input -->
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline-variant text-[20px]">search</span>
+</div>
+<input class="w-full h-14 bg-surface-container border border-outline/20 rounded-xl pl-12 pr-16 text-body-lg text-on-background placeholder:text-outline-variant focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-inner" placeholder="Add ingredient (e.g., Chicken, Garlic)..." type="text"/>
+<button class="absolute inset-y-1.5 right-1.5 w-11 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined font-bold text-[24px]">add</span>
+</button>
+</div>
+<!-- Selected Ingredients Card (Glassmorphism/Tactile) -->
+<section class="glass-card border border-outline/20 rounded-[20px] p-5 relative overflow-hidden">
+<!-- Decorative subtle glow -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-4 relative z-10">
+<h2 class="font-title-md text-title-md text-on-surface">Your Selected Ingredients</h2>
+<span class="bg-primary/10 border border-primary/20 text-primary font-label-caps text-label-caps px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    4 items added
+                </span>
+</div>
+<div class="flex flex-wrap gap-2.5 relative z-10">
+<!-- Tag: Chicken Breast -->
+<div class="flex items-center gap-1.5 bg-surface-variant/80 border border-outline-variant rounded-full pl-3.5 pr-1.5 py-1.5 hover:bg-surface-variant transition-colors group cursor-default">
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Chicken Breast</span>
+<button class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-surface-bright text-outline hover:text-error transition-all active:scale-90">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Tag: Garlic -->
+<div class="flex items-center gap-1.5 bg-surface-variant/80 border border-outline-variant rounded-full pl-3.5 pr-1.5 py-1.5 hover:bg-surface-variant transition-colors group cursor-default">
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Garlic</span>
+<button class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-surface-bright text-outline hover:text-error transition-all active:scale-90">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Tag: Baby Spinach -->
+<div class="flex items-center gap-1.5 bg-surface-variant/80 border border-outline-variant rounded-full pl-3.5 pr-1.5 py-1.5 hover:bg-surface-variant transition-colors group cursor-default">
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Baby Spinach</span>
+<button class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-surface-bright text-outline hover:text-error transition-all active:scale-90">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Tag: Olive Oil -->
+<div class="flex items-center gap-1.5 bg-surface-variant/80 border border-outline-variant rounded-full pl-3.5 pr-1.5 py-1.5 hover:bg-surface-variant transition-colors group cursor-default">
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Olive Oil</span>
+<button class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-surface-bright text-outline hover:text-error transition-all active:scale-90">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Quick Add Staples -->
+<section class="flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-on-surface">Quick Add Staples</h3>
+<div class="flex flex-wrap gap-2.5">
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Eggs
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Rice
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Tomatoes
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Onion
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Parmesan
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Lemon
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Pasta
+                </button>
+<button class="font-body-sm text-body-sm px-4 py-2 rounded-full border border-outline/30 bg-transparent text-outline hover:bg-surface-variant hover:text-on-surface hover:border-outline-variant active:scale-95 transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Bell Pepper
+                </button>
+</div>
+</section>
+<!-- Meal Preferences -->
+<section class="flex flex-col gap-4 mb-8">
+<h3 class="font-title-md text-title-md text-on-surface">Meal Preferences</h3>
+<div class="flex flex-wrap gap-2.5">
+<button class="font-label-caps text-label-caps uppercase tracking-wider px-4 py-2.5 rounded-xl border border-outline/20 bg-surface-container text-outline hover:bg-surface-variant transition-all active:scale-95">Under 30 Mins</button>
+<button class="font-label-caps text-label-caps uppercase tracking-wider px-4 py-2.5 rounded-xl border border-primary/50 bg-primary/10 text-primary transition-all active:scale-95 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> High Protein
+                </button>
+<button class="font-label-caps text-label-caps uppercase tracking-wider px-4 py-2.5 rounded-xl border border-outline/20 bg-surface-container text-outline hover:bg-surface-variant transition-all active:scale-95">Vegetarian</button>
+<button class="font-label-caps text-label-caps uppercase tracking-wider px-4 py-2.5 rounded-xl border border-outline/20 bg-surface-container text-outline hover:bg-surface-variant transition-all active:scale-95">Low Carb</button>
+</div>
+</section>
+</main>
+<!-- Floating Action Button (FAB) -->
+<div class="fixed bottom-[96px] left-0 w-full px-container-padding z-40">
+<button class="w-full h-14 bg-primary-container text-on-primary-container rounded-full font-title-md text-title-md shadow-[0_8px_32px_-8px_rgba(255,107,53,0.6)] hover:bg-primary-container/90 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+            GENERATE RECIPE (4)
+        </button>
+</div>
+<!-- BottomNavBar JSON Component -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl border-t border-white/10 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex justify-around items-center h-20 px-4 pb-safe">
+<!-- Tab: Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<!-- Tab: Ingredients (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 hover:text-primary transition-colors active:scale-90 transition-transform w-24" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">kitchen</span>
+<span class="font-label-caps text-label-caps">Ingredients</span>
+</a>
+<!-- Tab: Saved (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">bookmark</span>
+<span class="font-label-caps text-label-caps">Saved</span>
+</a>
+</nav>
+<!-- Safe area padding for iOS -->
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</body></html>
