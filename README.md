@@ -58,7 +58,7 @@ Simply open `site/public/index.html` in any modern web browser or serve it using
 npx serve site/public
 ```
 
-![Screenshot Description](Screenshot 2026-09-04 213133.pn)
+
 
 
 
