@@ -23,8 +23,7 @@
 - **Assets & Icons**: Custom brand logos, responsive vector icons, and favicon suite
 
 ---
-
-![image alt}(https://github.com/sandip07102004/SmartChief/blob/main/Screenshot%202026-09-04%20213208.png)
+![Screenshot Description]([./images/your-screenshot.png](https://github.com/sandip07102004/SmartChief/blob/main/Screenshot%202026-09-04%20213208.png))
 
 ## 📂 Project Structure
 
