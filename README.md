@@ -23,7 +23,6 @@
 - **Assets & Icons**: Custom brand logos, responsive vector icons, and favicon suite
 
 ---
-![Screenshot Description]([./images/your-screenshot.png](https://github.com/sandip07102004/SmartChief/blob/main/Screenshot%202026-09-04%20213208.png))
 
 ## 📂 Project Structure
 
@@ -59,6 +58,7 @@ Simply open `site/public/index.html` in any modern web browser or serve it using
 npx serve site/public
 ```
 
+![Screenshot Description](Screenshot 2026-09-04 213133.pn)
 
 
 
