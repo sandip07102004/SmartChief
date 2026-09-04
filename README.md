@@ -58,7 +58,7 @@ Simply open `site/public/index.html` in any modern web browser or serve it using
 npx serve site/public
 ```
 
-![Image Alt}(https://github.com/sandip07102004/SmartChief/blob/main/Screenshot%202026-09-04%20213133.png?raw=true)
+![image alt}(https://github.com/sandip07102004/SmartChief/blob/main/Screenshot%202026-09-04%20213133.png?raw=true)
 
 
 
