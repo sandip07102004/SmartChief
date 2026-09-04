@@ -24,7 +24,9 @@
 
 ---
 
-![image alt](https://github.com/sandip07102004/SmartChief/blob/9ff4505e832b375ee0803c93c3de545d80302550/Screenshot%202026-09-04%20213133.png)     ![image alt](https://github.com/sandip07102004/SmartChief/blob/8baa1f161b4c6c2f1998b3e74319b5e4759950a1/Screenshot%202026-09-04%20213208.png)
+![image alt](https://github.com/sandip07102004/SmartChief/blob/8baa1f161b4c6c2f1998b3e74319b5e4759950a1/Screenshot%202026-09-04%20213208.png)
+![image alt](https://github.com/sandip07102004/SmartChief/blob/9ff4505e832b375ee0803c93c3de545d80302550/Screenshot%202026-09-04%20213133.png)    
+
 
 ## 📂 Project Structure
 
